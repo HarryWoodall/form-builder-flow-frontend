@@ -73,12 +73,17 @@
     <Handle type="target" position={Position.Left} />
     <Handle type="source" position={Position.Right} />
     {#key refreshCount}
+      <!-- is this still neede anymore? -->
       <div>
-        <Heading tag="h2" customSize="text-2xl font-bold">{page.Title}</Heading>
+        {#if !page.HideBackButton}
+          <P class="mb-1 underline font-semibold decoration-2 text-green-500">{`Back`}</P>
+        {/if}
+
+        {#if !page.HideTitle}
+          <Heading tag="h2" customSize="text-2xl font-bold">{page.Title}</Heading>
+        {/if}
+
         <P class="mb-3 text-gray-500">{page.PageSlug}</P>
-        <Checkbox checked={page.HideTitle}>Hide title</Checkbox>
-        <Checkbox checked={page.HideBackButton}>Hide back button</Checkbox>
-        <Heading tag="h3" customSize="text-xl font-bold mt-4">Elements</Heading>
         <ul class="mb-6">
           {#if page.Elements}
             {#each page.Elements as element, index}

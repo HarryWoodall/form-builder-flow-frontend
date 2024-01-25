@@ -6,6 +6,10 @@
   import { AngleDownSolid } from "flowbite-svelte-icons";
   import AddAnotherElement from "./AddAnotherElement.svelte";
   import ValidationMessages from "../pageContent/ValidationMessages.svelte";
+  import HintText from "../pageContent/HintText.svelte";
+  import PageHeading from "../pageContent/PageHeading.svelte";
+  import TextAreaCharacterCount from "../pageContent/TextAreaCharacterCount.svelte";
+  import Optional from "../pageContent/Optional.svelte";
 
   export let element: IElement;
   export let index: number;
@@ -48,19 +52,17 @@
   on:mouseenter={mouseEnterCard}
   on:mouseleave={mouseLeaveCard}
 >
-  {#if properties.Optional}
-    <Indicator color="dark" placement="top-right" class="m-3" />
-  {/if}
-
+  <Optional {element} />
   {#if type == "radio"}
+    <PageHeading {element} />
+    <HintText {element} />
     <RadioElement {element} />
   {:else if type == "text"}
     <TextElement {element} />
   {:else}
-    <div>
-      <Heading tag="h2" customSize="font-bold">{properties?.QuestionId}</Heading>
-      <P class="mb-1 text-gray-500">{element.Type}</P>
-    </div>
+    <PageHeading {element} />
+    <HintText {element} />
+    <TextAreaCharacterCount {element} />
   {/if}
 
   <ValidationMessages {element} />

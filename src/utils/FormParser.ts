@@ -49,7 +49,7 @@ export function generateFlowFromSchema(form: FormSchema) {
 
     const connections: Edge[] = [];
 
-    currentPage.Behaviours?.forEach((behaviour) => {
+    currentPage.Behaviours?.forEach((behaviour, index) => {
       if (!behaviour.PageSlug) {
         const beahaviourType = behaviour[Object.keys(behaviour).find((key) => key.toLowerCase() === "behaviourtype") as keyof Behaviour];
         if (beahaviourType?.includes("Submit")) behaviour.PageSlug = "success";
@@ -57,7 +57,7 @@ export function generateFlowFromSchema(form: FormSchema) {
       }
 
       const newEdge: Edge = {
-        id: `${currentPage.PageSlug}-${behaviour.PageSlug}`,
+        id: `${currentPage.PageSlug}-${behaviour.PageSlug}-${index}`,
         source: currentPage.PageSlug as string,
         sourceHandle: "start",
         target: (behaviour.PageSlug as string) || "unknown",

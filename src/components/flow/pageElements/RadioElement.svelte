@@ -15,10 +15,8 @@
 </script>
 
 <div>
-  <Heading tag="h2" customSize="font-bold">{element.Properties?.QuestionId}</Heading>
-  <P class="mb-1 text-gray-500">{element.Type}</P>
   {#if element.Properties && element.Properties.Options}
-    <Listgroup items={options} let:item>
+    <Listgroup items={options} let:item class="my-2">
       {item.name} <span class="font-bold text-orange-300">{item.conditionalElement || ""}</span>
     </Listgroup>
   {/if}
