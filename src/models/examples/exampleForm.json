@@ -1,0 +1,616 @@
+{
+  "FormName": "Application for registration as a dealer in second hand goods",
+  "BaseURL": "registration-of-a-second-hand-goods-dealer",
+  "StartPageUrl": "https://www.stockport.gov.uk/",
+  "FirstPageSlug": "application-type",
+  "EnvironmentAvailabilities": [
+    {
+      "Environment": "int",
+      "IsAvailable": true
+    },
+    {
+      "Environment": "qa",
+      "IsAvailable": true
+    },
+    {
+      "Environment": "stage",
+      "IsAvailable": false
+    },
+    {
+      "Environment": "prod",
+      "IsAvailable": false
+    }
+  ],
+  "Pages": [
+    {
+      "Title": "Type of application",
+      "PageSlug": "application-type",
+      "HideBackButton": true,
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Radio",
+          "Properties": {
+            "QuestionId": "applicationType",
+            "Label": "Type of application",
+            "LegendAsH1": true,
+            "CustomValidationMessage": "Select the type of application",
+            "Options": [
+              {
+                "Text": "New",
+                "Value": "New"
+              },
+              {
+                "Text": "Renewal",
+                "Value": "Renewal"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "name"
+        }
+      ]
+    },
+    {
+      "Title": "Your name",
+      "PageSlug": "name",
+      "HideTitle": false,
+      "Elements": [
+        {
+          "ElementRef": "firstname",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "firstName"
+          }
+        },
+        {
+          "ElementRef": "lastname",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "lastName"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "address"
+        }
+      ]
+    },
+    {
+      "Title": "Your address",
+      "PageSlug": "address",
+      "Elements": [
+        {
+          "Type": "Address",
+          "Properties": {
+            "QuestionId": "address",
+            "AddressProvider": "CRM",
+            "MaxLength": 60,
+            "CustomValidationMessage": "Enter your postcode",
+            "AddressManualLabel": "Enter your address",
+            "TargetMapping": "address"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "contact-details"
+        }
+      ]
+    },
+    {
+      "Title": "What are your contact details?",
+      "PageSlug": "contact-details",
+      "HideTitle": false,
+      "Elements": [
+        {
+          "ElementRef": "phone",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "phone"
+          }
+        },
+        {
+          "ElementRef": "email",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "email"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep",
+            "Text": "Continue"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "further-applicants"
+        }
+      ]
+    },
+    {
+      "Title": "Are there any further applicants?",
+      "PageSlug": "further-applicants",
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Radio",
+          "Properties": {
+            "QuestionId": "furtherApplicants",
+            "Label": "Are there any further applicants?",
+            "Hint": "",
+            "LegendAsH1": true,
+            "CustomValidationMessage": "Select yes if there are further applicants",
+            "Options": [
+              {
+                "Text": "Yes",
+                "Value": "Yes"
+              },
+              {
+                "Text": "No",
+                "Value": "No"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [
+            {
+              "conditionType": "EqualTo",
+              "comparisonValue": "Yes",
+              "questionId": "furtherApplicants"
+            }
+          ],
+          "behaviourType": "GoToPage",
+          "PageSlug": "other-name"
+        },
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "business-name"
+        }
+      ]
+    },
+    {
+      "Title": "Other applicant name",
+      "PageSlug": "other-name",
+      "HideTitle": false,
+      "Elements": [
+        {
+          "ElementRef": "firstname",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "OtherFirstName",
+            "CustomValidationMessage": "Enter the first name"
+          }
+        },
+        {
+          "ElementRef": "lastname",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "OtherLastName",
+            "CustomValidationMessage": "Enter the last name"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "other-address"
+        }
+      ]
+    },
+    {
+      "Title": "Other applicant address",
+      "PageSlug": "other-address",
+      "Elements": [
+        {
+          "Type": "Address",
+          "Properties": {
+            "QuestionId": "otherApplicantAddress",
+            "AddressProvider": "CRM",
+            "MaxLength": 60,
+            "AddressManualLabel": "Enter the address",
+            "TargetMapping": "address"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "other-contact-details"
+        }
+      ]
+    },
+    {
+      "Title": "Other applicant contact details",
+      "PageSlug": "other-contact-details",
+      "HideTitle": false,
+      "Elements": [
+        {
+          "ElementRef": "phone",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "otherPhone",
+            "CustomValidationMessage": "Enter the phone number"
+          }
+        },
+        {
+          "ElementRef": "email",
+          "Type": "Reusable",
+          "Properties": {
+            "QuestionId": "otherEmail",
+            "CustomValidationMessage": "Enter the email"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep",
+            "Text": "Continue"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "business-name"
+        }
+      ]
+    },
+    {
+      "Title": "Trading name of business",
+      "PageSlug": "business-name",
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Textbox",
+          "Properties": {
+            "QuestionId": "businessName",
+            "Label": "Trading name of business",
+            "LabelAsH1": true,
+            "MaxLength": 60,
+            "CustomValidationMessage": "Enter details"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "nature-of-business"
+        }
+      ]
+    },
+    {
+      "Title": "Nature of business",
+      "PageSlug": "nature-of-business",
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Textarea",
+          "Properties": {
+            "QuestionId": "NatureOfBusiness",
+            "Label": "Nature of business",
+            "Hint": "State type of goods",
+            "CustomValidationMessage": "Enter the details",
+            "LabelAsH1": true,
+            "MaxLength": "500",
+            "DisplayCharacterCount": true
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "trade-from-market"
+        }
+      ]
+    },
+    {
+      "Title": "Are you intending to trade from a market?",
+      "PageSlug": "trade-from-market",
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Radio",
+          "Properties": {
+            "QuestionId": "TradeFromMarket",
+            "Label": "Are you intending to trade from a market?",
+            "LegendAsH1": true,
+            "CustomValidationMessage": "Select the option you want",
+            "Options": [
+              {
+                "Text": "Yes",
+                "Value": "Yes"
+              },
+              {
+                "Text": "No",
+                "Value": "No"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [
+            {
+              "conditionType": "EqualTo",
+              "comparisonValue": "Yes",
+              "questionId": "TradeFromMarket"
+            }
+          ],
+          "behaviourType": "GoToPage",
+          "PageSlug": "market-details"
+        },
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "premises-address"
+        }
+      ]
+    },
+    {
+      "Title": "Which markets will you be trading from?",
+      "PageSlug": "market-details",
+      "Elements": [
+        {
+          "Type": "AddAnother",
+          "Properties": {
+            "QuestionId": "MarketDetails",
+            "MaximumFieldsets": 4,
+            "AppendText": "market",
+            "Elements": [
+              {
+                "Type": "Textbox",
+                "Properties": {
+                  "QuestionId": "marketName",
+                  "Label": "Market name",
+                  "SetAutofocus": true
+                }
+              },
+              {
+                "Type": "Textbox",
+                "Properties": {
+                  "QuestionId": "stallNumber",
+                  "Label": "Stall or unit number",
+                  "SetAutofocus": true
+                }
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "premises-address"
+        }
+      ]
+    },
+    {
+      "Title": "Address of premises",
+      "PageSlug": "premises-address",
+      "Elements": [
+        {
+          "Type": "Address",
+          "Properties": {
+            "QuestionId": "premisesAddress",
+            "AddressProvider": "CRM",
+            "MaxLength": 60,
+            "AddressManualLabel": "Enter the address",
+            "TargetMapping": "address"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "previous-business"
+        }
+      ]
+    },
+    {
+      "Title": "Are you taking over a business which is/has previously been registered to a dealer in second hand goods?",
+      "PageSlug": "previous-business",
+      "HideTitle": true,
+      "Elements": [
+        {
+          "Type": "Radio",
+          "Properties": {
+            "QuestionId": "TakeOverPreviousBusiness",
+            "Label": "Are you taking over a business which is/has previously been registered to a dealer in second hand goods?",
+            "Hint": "",
+            "LegendAsH1": true,
+            "CustomValidationMessage": "Select the option you want",
+            "Options": [
+              {
+                "Text": "Yes",
+                "Value": "Yes",
+                "ConditionalElementId": "certificateRegistrationNumber"
+              },
+              {
+                "Text": "No",
+                "Value": "No"
+              }
+            ]
+          }
+        },
+        {
+          "Type": "Textbox",
+          "Properties": {
+            "QuestionId": "certificateRegistrationNumber",
+            "Label": "Certificate registration number",
+            "MaxLength": 60,
+            "IsConditionalElement": true,
+            "CustomValidationMessage": "Enter details"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep",
+            "Text": "Continue"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "GoToPage",
+          "PageSlug": "declaration"
+        }
+      ]
+    },
+    {
+      "Title": "Declaration",
+      "PageSlug": "declaration",
+      "HideTitle": false,
+      "Elements": [
+        {
+          "Type": "Declaration",
+          "Properties": {
+            "Label": "Declaration",
+            "HideLabel": true,
+            "QuestionId": "Declaration",
+            "Text": "I make this application believing the contents to be true and accurate and accept that if any information is found to be untrue or false that this shall not be accepted as a valid application for the purposes of Section 54 of the Greater Manchester Act, 1981 and that certain false information may make me liable for prosecution",
+            "CustomValidationMessage": "You must agree to the declaration to continue"
+          }
+        },
+        {
+          "Type": "Button",
+          "Properties": {
+            "ButtonId": "nextStep",
+            "Text": "Submit"
+          }
+        }
+      ],
+      "Behaviours": [
+        {
+          "conditions": [],
+          "behaviourType": "SubmitAndEmail",
+          "PageSlug": "success"
+        }
+      ]
+    },
+    {
+      "Title": "Success",
+      "BannerTitle": "success",
+      "PageSlug": "success",
+      "HideBackButton": true,
+      "Elements": [
+        {
+          "Type": "h2",
+          "Properties": {
+            "Text": "What happens next"
+          }
+        },
+        {
+          "Type": "p",
+          "Properties": {
+            "Text": "You'll receive a confirmation email."
+          }
+        },
+        {
+          "Type": "link",
+          "Properties": {
+            "Text": "Go to the homepage",
+            "Url": "https://www.stockport.gov.uk/",
+            "OpenInTab": true,
+            "ClassName": "govuk-button"
+          }
+        }
+      ]
+    }
+  ]
+}

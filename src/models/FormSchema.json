@@ -1,0 +1,1259 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "FormSchema",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "FormName": {
+      "type": ["null", "string"]
+    },
+    "BaseURL": {
+      "type": ["null", "string"]
+    },
+    "StartPageUrl": {
+      "type": ["null", "string"]
+    },
+    "FirstPageSlug": {
+      "type": ["null", "string"]
+    },
+    "FormAccessKey": {
+      "type": ["null", "string"]
+    },
+    "FormAccessKeyName": {
+      "type": ["null", "string"]
+    },
+    "FormAccessReferrers": {
+      "type": ["array", "null"],
+      "items": {
+        "type": "string"
+      }
+    },
+    "Embeddable": {
+      "type": "boolean"
+    },
+    "FeedbackForm": {
+      "type": ["null", "string"]
+    },
+    "FeedbackPhase": {
+      "type": ["null", "string"]
+    },
+    "GenerateReferenceNumber": {
+      "type": "boolean"
+    },
+    "GeneratedReferenceNumberMapping": {
+      "type": ["null", "string"]
+    },
+    "SavePaymentAmount": {
+      "type": "boolean"
+    },
+    "PaymentAmountMapping": {
+      "type": ["null", "string"]
+    },
+    "ProcessPaymentCallbackResponse": {
+      "type": "boolean"
+    },
+    "CallbackFailureContactNumber": {
+      "type": ["null", "string"]
+    },
+    "ReferencePrefix": {
+      "type": ["null", "string"]
+    },
+    "BreadCrumbs": {
+      "type": ["array", "null"],
+      "items": {
+        "$ref": "#/definitions/Breadcrumb"
+      }
+    },
+    "Pages": {
+      "type": ["array", "null"],
+      "items": {
+        "$ref": "#/definitions/Page"
+      }
+    },
+    "FormActions": {
+      "type": ["array", "null"],
+      "items": {
+        "$ref": "#/definitions/IAction"
+      }
+    },
+    "EnvironmentAvailabilities": {
+      "type": ["array", "null"],
+      "items": {
+        "$ref": "#/definitions/EnvironmentAvailability"
+      }
+    },
+    "HasDocumentUpload": {
+      "type": "boolean"
+    },
+    "DocumentType": {
+      "type": ["array", "null"],
+      "items": {
+        "$ref": "#/definitions/EDocumentType"
+      }
+    }
+  },
+  "definitions": {
+    "Breadcrumb": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Text": {
+          "type": ["null", "string"]
+        },
+        "Url": {
+          "type": ["null", "string"]
+        }
+      }
+    },
+    "Page": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Title": {
+          "type": ["null", "string"]
+        },
+        "PageSlug": {
+          "type": ["null", "string"]
+        },
+        "DisplayBreadCrumbs": {
+          "type": "boolean"
+        },
+        "DisplayOptionalInTitle": {
+          "type": "boolean"
+        },
+        "Elements": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IElement"
+          }
+        },
+        "Behaviours": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Behaviour"
+          }
+        },
+        "IncomingValues": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IncomingValue"
+          }
+        },
+        "IsValidated": {
+          "type": "boolean"
+        },
+        "HideTitle": {
+          "type": "boolean"
+        },
+        "HideBackButton": {
+          "type": "boolean"
+        },
+        "BannerTitle": {
+          "type": ["null", "string"]
+        },
+        "LeadingParagraph": {
+          "type": ["null", "string"]
+        },
+        "HasIncomingValues": {
+          "type": "boolean"
+        },
+        "HasIncomingGetValues": {
+          "type": "boolean"
+        },
+        "HasIncomingPostValues": {
+          "type": "boolean"
+        },
+        "PageActions": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IAction"
+          }
+        },
+        "HasPageActions": {
+          "type": "boolean"
+        },
+        "HasIncomingAction": {
+          "type": "boolean"
+        },
+        "HasPageActionsGetValues": {
+          "type": "boolean"
+        },
+        "HasPageActionsPostValues": {
+          "type": "boolean"
+        },
+        "HasDynamicLookupElements": {
+          "type": "boolean"
+        },
+        "RenderConditions": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Condition"
+          }
+        },
+        "HasRenderConditions": {
+          "type": "boolean"
+        },
+        "ValidatableElements": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IElement"
+          }
+        },
+        "ValidatableElementsConditional": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IElement"
+          }
+        }
+      }
+    },
+    "IElement": {
+      "type": "object",
+      "x-abstract": true,
+      "additionalProperties": false,
+      "properties": {
+        "Type": {
+          "$ref": "#/definitions/EElementType"
+        },
+        "Properties": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/BaseProperty"
+            }
+          ]
+        },
+        "Lookup": {
+          "type": ["null", "string"]
+        },
+        "IsValid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "EElementType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Name",
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "HR",
+        "Img",
+        "P",
+        "OL",
+        "UL",
+        "AddAnother",
+        "Address",
+        "AddressManual",
+        "Booking",
+        "Button",
+        "Checkbox",
+        "DateInput",
+        "DatePicker",
+        "Declaration",
+        "DocumentDownload",
+        "DocumentUpload",
+        "Fieldset",
+        "FileUpload",
+        "InlineAlert",
+        "Legend",
+        "Link",
+        "Map",
+        "MultipleFileUpload",
+        "Organisation",
+        "Radio",
+        "Reusable",
+        "Select",
+        "Span",
+        "Street",
+        "Summary",
+        "Textarea",
+        "Textbox",
+        "TimeInput",
+        "UploadedFilesSummary",
+        "Warning"
+      ],
+      "enum": [
+        "Name",
+        "H1",
+        "H2",
+        "H3",
+        "H4",
+        "H5",
+        "H6",
+        "HR",
+        "Img",
+        "P",
+        "OL",
+        "UL",
+        "AddAnother",
+        "Address",
+        "AddressManual",
+        "Booking",
+        "Button",
+        "Checkbox",
+        "DateInput",
+        "DatePicker",
+        "Declaration",
+        "DocumentDownload",
+        "DocumentUpload",
+        "Fieldset",
+        "FileUpload",
+        "InlineAlert",
+        "Legend",
+        "Link",
+        "Map",
+        "MultipleFileUpload",
+        "Organisation",
+        "Radio",
+        "Reusable",
+        "Select",
+        "Span",
+        "Street",
+        "Summary",
+        "Textarea",
+        "Textbox",
+        "TimeInput",
+        "UploadedFilesSummary",
+        "Warning"
+      ]
+    },
+    "BaseProperty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "ListItems": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "SearchPeriod": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Elements": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/IElement"
+          }
+        },
+        "FirstLabel": {
+          "type": ["null", "string"]
+        },
+        "MinimumFieldsets": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "MaximumFieldsets": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "AddressManualAddressLine1": {
+          "type": ["null", "string"]
+        },
+        "AddressManualAddressLine2": {
+          "type": ["null", "string"]
+        },
+        "AddressManualAddressTown": {
+          "type": ["null", "string"]
+        },
+        "AddressManualAddressPostcode": {
+          "type": ["null", "string"]
+        },
+        "AddressManualHint": {
+          "type": ["null", "string"]
+        },
+        "AddressLabel": {
+          "type": ["null", "string"]
+        },
+        "PostcodeLabel": {
+          "type": ["null", "string"]
+        },
+        "AddressManualLabel": {
+          "type": ["null", "string"]
+        },
+        "AddressProvider": {
+          "type": ["null", "string"]
+        },
+        "AddressIAG": {
+          "type": ["null", "string"]
+        },
+        "StockportPostcode": {
+          "type": "boolean"
+        },
+        "ValidatePostcode": {
+          "type": "boolean"
+        },
+        "DisplayNoResultsIAG": {
+          "type": "boolean"
+        },
+        "Disabled": {
+          "type": "boolean"
+        },
+        "AddressManualLinkText": {
+          "type": ["null", "string"]
+        },
+        "DisableManualAddress": {
+          "type": "boolean"
+        },
+        "NoManualAddressDetailText": {
+          "type": ["null", "string"]
+        },
+        "AddressManualLineMaxLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "AddressManualPostcodeMaxLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Source": {
+          "type": ["null", "string"]
+        },
+        "AltText": {
+          "type": ["null", "string"]
+        },
+        "Text": {
+          "type": ["null", "string"]
+        },
+        "AppendText": {
+          "type": ["null", "string"]
+        },
+        "QuestionId": {
+          "type": ["null", "string"]
+        },
+        "Label": {
+          "type": ["null", "string"]
+        },
+        "StrongLabel": {
+          "type": "boolean"
+        },
+        "Optional": {
+          "type": "boolean"
+        },
+        "IsDynamicallyGeneratedElement": {
+          "type": "boolean"
+        },
+        "Email": {
+          "type": "boolean"
+        },
+        "Postcode": {
+          "type": "boolean"
+        },
+        "Numeric": {
+          "type": "boolean"
+        },
+        "Options": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Option"
+          }
+        },
+        "MaxLength": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Value": {
+          "type": ["null", "string"]
+        },
+        "Hint": {
+          "type": ["null", "string"]
+        },
+        "SelectHint": {
+          "type": ["null", "string"]
+        },
+        "CustomValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "SelectCustomValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "ClassName": {
+          "type": ["null", "string"]
+        },
+        "Checked": {
+          "type": "boolean"
+        },
+        "SelectLabel": {
+          "type": ["null", "string"]
+        },
+        "Max": {
+          "type": ["null", "string"]
+        },
+        "Min": {
+          "type": ["null", "string"]
+        },
+        "TargetMapping": {
+          "type": ["null", "string"]
+        },
+        "UpperLimitValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "LegendAsH1": {
+          "type": "boolean"
+        },
+        "LabelAsH1": {
+          "type": "boolean"
+        },
+        "Purpose": {
+          "type": ["null", "string"]
+        },
+        "Spellcheck": {
+          "type": "boolean"
+        },
+        "NotAnIntegerValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "DecimalValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "DecimalPlacesValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "IAG": {
+          "type": ["null", "string"]
+        },
+        "HideOptionalText": {
+          "type": "boolean"
+        },
+        "IsConditionalElement": {
+          "type": "boolean"
+        },
+        "OrderOptionsAlphabetically": {
+          "type": "boolean"
+        },
+        "SummaryLabel": {
+          "type": ["null", "string"]
+        },
+        "Warning": {
+          "type": ["null", "string"]
+        },
+        "Autofocus": {
+          "type": "boolean"
+        },
+        "SetAutofocus": {
+          "type": "boolean"
+        },
+        "BookingProvider": {
+          "type": ["null", "string"]
+        },
+        "AppointmentTypes": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/AppointmentType"
+          }
+        },
+        "CheckYourBooking": {
+          "type": "boolean"
+        },
+        "AppointmentTime": {
+          "type": ["null", "string"]
+        },
+        "NextAvailableIAG": {
+          "type": ["null", "string"]
+        },
+        "NoAvailableTimeForBookingType": {
+          "type": ["null", "string"]
+        },
+        "CustomerAddressId": {
+          "type": ["null", "string"]
+        },
+        "AutoConfirm": {
+          "type": "boolean"
+        },
+        "LimitNextAvailableByDays": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "LimitNextAvailableFromDate": {
+          "type": ["null", "string"]
+        },
+        "ButtonId": {
+          "type": ["null", "string"]
+        },
+        "ButtonName": {
+          "type": ["null", "string"]
+        },
+        "DisableOnClick": {
+          "type": "boolean"
+        },
+        "ExclusiveCheckboxValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "SelectExactly": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "RestrictFutureDate": {
+          "type": "boolean"
+        },
+        "RestrictPastDate": {
+          "type": "boolean"
+        },
+        "RestrictCurrentDate": {
+          "type": "boolean"
+        },
+        "OutsideRange": {
+          "type": ["null", "string"]
+        },
+        "OutsideRangeType": {
+          "type": ["null", "string"]
+        },
+        "WithinRange": {
+          "type": ["null", "string"]
+        },
+        "WithinRangeType": {
+          "type": ["null", "string"]
+        },
+        "IsFutureDateAfterRelative": {
+          "type": ["null", "string"]
+        },
+        "IsFutureDateBeforeRelative": {
+          "type": ["null", "string"]
+        },
+        "IsPastDateBeforeRelative": {
+          "type": ["null", "string"]
+        },
+        "IsPastDateAfterRelative": {
+          "type": ["null", "string"]
+        },
+        "Day": {
+          "type": ["null", "string"]
+        },
+        "Month": {
+          "type": ["null", "string"]
+        },
+        "Year": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageInvalidDate": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageRestrictFutureDate": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageRestrictPastDate": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageRestrictCurrentDate": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageIsFutureDateAfterRelative": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageIsFutureDateBeforeRelative": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageIsPastDateBeforeRelative": {
+          "type": ["null", "string"]
+        },
+        "IsDateBefore": {
+          "type": ["null", "string"]
+        },
+        "IsDateBeforeAbsolute": {
+          "type": ["null", "string"]
+        },
+        "IsDateBeforeValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "IsDateAfter": {
+          "type": ["null", "string"]
+        },
+        "IsDateAfterAbsolute": {
+          "type": ["null", "string"]
+        },
+        "IsDateAfterValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "IsDateEqualityAllowed": {
+          "type": "boolean"
+        },
+        "HideLabel": {
+          "type": "boolean"
+        },
+        "DocumentType": {
+          "$ref": "#/definitions/EDocumentType"
+        },
+        "DocumentUploadUrl": {
+          "type": ["null", "string"]
+        },
+        "OpeningTag": {
+          "type": "boolean"
+        },
+        "AllowedFileTypes": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "MaxFileSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Size": {
+          "$ref": "#/definitions/ESize"
+        },
+        "Url": {
+          "type": ["null", "string"]
+        },
+        "OpenInTab": {
+          "type": "boolean"
+        },
+        "DisplayRightChevron": {
+          "type": "boolean"
+        },
+        "LookupSources": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/LookupSource"
+          }
+        },
+        "NoMapContent": {
+          "type": ["null", "string"]
+        },
+        "MaxCombinedFileSize": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "PageSubmitButtonLabel": {
+          "type": ["null", "string"]
+        },
+        "DisplayReCaptcha": {
+          "type": "boolean"
+        },
+        "OptionalIf": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Condition"
+            }
+          ]
+        },
+        "OrganisationProvider": {
+          "type": ["null", "string"]
+        },
+        "AllowSingleOption": {
+          "type": "boolean"
+        },
+        "Regex": {
+          "type": ["null", "string"]
+        },
+        "RegexValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "RequiredIf": {
+          "type": ["null", "string"]
+        },
+        "RequiredIfValidationMessage": {
+          "type": ["null", "string"]
+        },
+        "StreetProvider": {
+          "type": ["null", "string"]
+        },
+        "StreetIAG": {
+          "type": ["null", "string"]
+        },
+        "AllowEditing": {
+          "type": "boolean"
+        },
+        "Sections": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Section"
+          }
+        },
+        "HasSummarySectionsDefined": {
+          "type": "boolean"
+        },
+        "SummarySectionsAutoGenerated": {
+          "type": "boolean"
+        },
+        "DisplayCharacterCount": {
+          "type": "boolean"
+        },
+        "Width": {
+          "$ref": "#/definitions/ESize"
+        },
+        "Prefix": {
+          "type": ["null", "string"]
+        },
+        "Suffix": {
+          "type": ["null", "string"]
+        },
+        "Decimal": {
+          "type": "boolean"
+        },
+        "DecimalPlaces": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "Hours": {
+          "type": ["null", "string"]
+        },
+        "Minutes": {
+          "type": ["null", "string"]
+        },
+        "AmPm": {
+          "type": ["null", "string"]
+        },
+        "CustomValidationMessageAmPm": {
+          "type": ["null", "string"]
+        },
+        "ValidationMessageInvalidTime": {
+          "type": ["null", "string"]
+        },
+        "FileUploadQuestionIds": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "NoScript": {
+          "type": "boolean"
+        }
+      }
+    },
+    "Option": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Text": {
+          "type": ["null", "string"]
+        },
+        "Value": {
+          "type": ["null", "string"]
+        },
+        "Hint": {
+          "type": ["null", "string"]
+        },
+        "HasHint": {
+          "type": "boolean"
+        },
+        "ConditionalElementId": {
+          "type": ["null", "string"]
+        },
+        "HasConditionalElement": {
+          "type": "boolean"
+        },
+        "Checked": {
+          "type": "boolean"
+        },
+        "Selected": {
+          "type": "boolean"
+        },
+        "Divider": {
+          "type": ["null", "string"]
+        },
+        "HasDivider": {
+          "type": "boolean"
+        },
+        "Exclusive": {
+          "type": "boolean"
+        }
+      }
+    },
+    "AppointmentType": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Environment": {
+          "type": ["null", "string"]
+        },
+        "AppointmentId": {
+          "type": "string",
+          "format": "guid"
+        },
+        "AppointmentIdKey": {
+          "type": ["null", "string"]
+        },
+        "OptionalResources": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/BookingResource"
+          }
+        },
+        "NeedsAppointmentIdMapping": {
+          "type": "boolean"
+        }
+      }
+    },
+    "BookingResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ResourceId", "Quantity"],
+      "properties": {
+        "ResourceId": {
+          "type": "string",
+          "format": "guid",
+          "minLength": 1
+        },
+        "Quantity": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
+    "EDocumentType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": ["Unknown", "Txt", "Html", "Pdf"],
+      "enum": ["Unknown", "Txt", "Html", "Pdf"]
+    },
+    "ESize": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": ["Unspecified", "Small", "Medium", "Large", "ExtraLarge"],
+      "enum": [0, 1, 2, 3, 4]
+    },
+    "LookupSource": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "EnvironmentName": {
+          "type": ["null", "string"]
+        },
+        "Provider": {
+          "type": ["null", "string"]
+        },
+        "URL": {
+          "type": ["null", "string"]
+        },
+        "AuthToken": {
+          "type": ["null", "string"]
+        }
+      }
+    },
+    "Condition": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Conditions": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Condition"
+          }
+        },
+        "ConditionType": {
+          "$ref": "#/definitions/ECondition"
+        },
+        "IsNullOrEmpty": {
+          "type": ["boolean", "null"]
+        },
+        "EqualTo": {
+          "type": ["null", "string"]
+        },
+        "CheckboxContains": {
+          "type": ["null", "string"]
+        },
+        "QuestionId": {
+          "type": ["null", "string"]
+        },
+        "IsBefore": {
+          "type": ["integer", "null"],
+          "format": "int32"
+        },
+        "IsAfter": {
+          "type": ["integer", "null"],
+          "format": "int32"
+        },
+        "ComparisonValue": {
+          "type": ["null", "string"]
+        },
+        "ComparisonDate": {
+          "type": ["null", "string"]
+        },
+        "Unit": {
+          "$ref": "#/definitions/EDateUnit"
+        }
+      }
+    },
+    "ECondition": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": [
+        "Undefined",
+        "EqualTo",
+        "PaymentAmountEqualTo",
+        "Contains",
+        "IsNullOrEmpty",
+        "IsFileUploadNullOrEmpty",
+        "IsBefore",
+        "IsAfter",
+        "GreaterThan",
+        "LessThan",
+        "GreaterThanEqualTo",
+        "LessThanEqualTo",
+        "EndsWith",
+        "Any"
+      ],
+      "enum": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
+    },
+    "EDateUnit": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": ["Day", "Month", "Year"],
+      "enum": [0, 1, 2]
+    },
+    "Section": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Title": {
+          "type": ["null", "string"]
+        },
+        "Pages": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Behaviour": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Conditions": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/Condition"
+          }
+        },
+        "BehaviourType": {
+          "$ref": "#/definitions/EBehaviourType"
+        },
+        "PageSlug": {
+          "type": ["null", "string"]
+        },
+        "SubmitSlugs": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/SubmitSlug"
+          }
+        }
+      }
+    },
+    "EBehaviourType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": [
+        "Unknown",
+        "GoToPage",
+        "SubmitForm",
+        "GoToExternalPage",
+        "SubmitAndPay",
+        "SubmitAndRedirect",
+        "SubmitAndEmail",
+        "SubmitWithoutSubmission"
+      ],
+      "enum": ["Unknown", "GoToPage", "SubmitForm", "GoToExternalPage", "SubmitAndPay", "SubmitAndRedirect", "SubmitAndEmail", "SubmitWithoutSubmission"]
+    },
+    "SubmitSlug": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Environment": {
+          "type": ["null", "string"]
+        },
+        "URL": {
+          "type": ["null", "string"]
+        },
+        "Type": {
+          "type": ["null", "string"]
+        },
+        "AuthToken": {
+          "type": ["null", "string"]
+        },
+        "CallbackUrl": {
+          "type": ["null", "string"]
+        },
+        "RedirectUrl": {
+          "type": ["null", "string"]
+        }
+      }
+    },
+    "IncomingValue": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "QuestionId": {
+          "type": ["null", "string"]
+        },
+        "Name": {
+          "type": ["null", "string"]
+        },
+        "Optional": {
+          "type": "boolean"
+        },
+        "HttpActionType": {
+          "$ref": "#/definitions/EHttpActionType"
+        },
+        "Base64Encoded": {
+          "type": "boolean"
+        }
+      }
+    },
+    "EHttpActionType": {
+      "type": "integer",
+      "description": "",
+      "x-enumNames": ["Unknown", "Get", "Post"],
+      "enum": [0, 1, 2]
+    },
+    "IAction": {
+      "type": "object",
+      "x-abstract": true,
+      "additionalProperties": false,
+      "properties": {
+        "Type": {
+          "$ref": "#/definitions/EActionType"
+        },
+        "Properties": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/BaseActionProperty"
+            }
+          ]
+        }
+      }
+    },
+    "EActionType": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": ["Unknown", "RetrieveExternalData", "UserEmail", "BackOfficeEmail", "Validate", "TemplatedEmail"],
+      "enum": ["Unknown", "RetrieveExternalData", "UserEmail", "BackOfficeEmail", "Validate", "TemplatedEmail"]
+    },
+    "BaseActionProperty": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "HttpActionType": {
+          "$ref": "#/definitions/EHttpActionType"
+        },
+        "To": {
+          "type": ["null", "string"]
+        },
+        "From": {
+          "type": ["null", "string"]
+        },
+        "Content": {
+          "type": ["null", "string"]
+        },
+        "Subject": {
+          "type": ["null", "string"]
+        },
+        "TargetQuestionId": {
+          "type": ["null", "string"]
+        },
+        "IncludeInFormSubmission": {
+          "type": "boolean"
+        },
+        "PageActionSlugs": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/PageActionSlug"
+          }
+        },
+        "TemplateId": {
+          "type": ["null", "string"]
+        },
+        "EmailTemplateProvider": {
+          "type": ["null", "string"]
+        },
+        "Personalisation": {
+          "type": ["array", "null"],
+          "items": {
+            "type": "string"
+          }
+        },
+        "IncludeCaseReference": {
+          "type": "boolean"
+        }
+      }
+    },
+    "PageActionSlug": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Environment": {
+          "type": ["null", "string"]
+        },
+        "URL": {
+          "type": ["null", "string"]
+        },
+        "AuthToken": {
+          "type": ["null", "string"]
+        }
+      }
+    },
+    "EnvironmentAvailability": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Environment": {
+          "type": ["null", "string"]
+        },
+        "IsAvailable": {
+          "type": "boolean"
+        },
+        "EnabledFor": {
+          "type": ["array", "null"],
+          "items": {
+            "$ref": "#/definitions/EnabledForBase"
+          }
+        }
+      }
+    },
+    "EnabledForBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Type": {
+          "$ref": "#/definitions/EEnabledFor"
+        },
+        "Properties": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/EnabledForProperties"
+            }
+          ]
+        }
+      }
+    },
+    "EEnabledFor": {
+      "type": "string",
+      "description": "",
+      "x-enumNames": ["Unknown", "TimeWindow"],
+      "enum": ["Unknown", "TimeWindow"]
+    },
+    "EnabledForProperties": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Start": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "End": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}
