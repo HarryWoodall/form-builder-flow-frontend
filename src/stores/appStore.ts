@@ -3,7 +3,6 @@ import type { FormSchema, IElement, Page } from "../models/FormSchema";
 import type { Edge, Node } from "@xyflow/svelte";
 import type { InvalidFlow } from "../utils/FormValidator";
 
-export const formInputModalOpen = writable<boolean>(false);
 export const propertyArrayModalOpen = writable<boolean>(false);
 export const summaryArrayModalOpen = writable<boolean>(false);
 export const currentPropertyArrayItems = writable<unknown[]>([]);

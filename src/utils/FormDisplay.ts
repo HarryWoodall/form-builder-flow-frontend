@@ -1,5 +1,6 @@
 import Dagre from "@dagrejs/dagre";
 import { Position, type Edge, type Node } from "@xyflow/svelte";
+import type { InvalidFlow } from "./FormValidator";
 
 // const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
@@ -7,7 +8,7 @@ const border = 50;
 const nodeWidth = 400;
 const nodeHeight = 150;
 
-export function getLayoutedElements(nodes: Node[], edges: Edge[], direction = "TB") {
+export function getLayoutedElements(nodes: Node[], edges: Edge[], direction = "TB", formFlowValidation?: InvalidFlow) {
   const isHorizontal = direction === "LR";
   dagreGraph.setGraph({ rankdir: direction });
 
@@ -21,16 +22,24 @@ export function getLayoutedElements(nodes: Node[], edges: Edge[], direction = "T
 
   Dagre.layout(dagreGraph);
 
+  const maxHeightNode = Math.max(...nodes.map((node) => (node.computed && node.computed.height ? node.computed?.height : 1000)));
+
   nodes.forEach((node) => {
     const nodeWithPosition = dagreGraph.node(node.id);
     node.targetPosition = isHorizontal ? Position.Left : Position.Top;
     node.sourcePosition = isHorizontal ? Position.Right : Position.Bottom;
 
+    let xPos = nodeWithPosition.x - nodeWidth / 2;
+    let yPos = nodeWithPosition.y - nodeHeight / 2;
+
+    if (formFlowValidation && formFlowValidation?.unreachablePages.some((page) => page.PageSlug == node.id)) {
+      yPos = -maxHeightNode - 50;
+    }
     // We are shifting the dagre node position (anchor=center center) to the top left
     // so it matches the React Flow node anchor point (top left).
     node.position = {
-      x: nodeWithPosition.x - nodeWidth / 2,
-      y: nodeWithPosition.y - nodeHeight / 2,
+      x: xPos,
+      y: yPos,
     };
   });
 

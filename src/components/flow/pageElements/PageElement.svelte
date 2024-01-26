@@ -9,7 +9,7 @@
 
   let type: string | EElementType = element.Type as EElementType;
 
-  if (element.Type == "Radio" || element.Type == "Checkbox") type = "radio";
+  if (element.Type == "Radio" || element.Type == "Checkbox" || element.Type == "Select") type = "radio";
   if (!element.Properties?.QuestionId && (element.Properties?.Text || element.Properties?.ListItems)) type = "text";
 </script>
 

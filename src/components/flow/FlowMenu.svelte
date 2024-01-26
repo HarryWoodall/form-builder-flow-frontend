@@ -1,20 +1,17 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
-  import { formInputModalOpen } from "../../stores/appStore";
+  import FormInputModal from "../modals/FormInputModal.svelte";
   import getLayoutedElements from "../../utils/FormDisplay";
-  import { edges as edgeStore, nodes as nodeStore, form } from "../../stores/appStore";
+  import { edges as edgeStore, nodes as nodeStore, form, formFlowValidation } from "../../stores/appStore";
   import { validateFlow, validateIds } from "../../utils/FormValidator";
   import { useEdges, useNodes } from "@xyflow/svelte";
+  import FormSummaryItems from "../modals/FormSummaryItems.svelte";
 
   const nodes = useNodes();
   const edges = useEdges();
 
-  const uploadJson = () => {
-    formInputModalOpen.update(() => true);
-  };
-
   const onLayout = (direction: string) => {
-    const layoutedElements = getLayoutedElements($nodes, $edges, direction);
+    const layoutedElements = getLayoutedElements($nodes, $edges, direction, $formFlowValidation);
 
     nodeStore.update(() => $nodes);
     edgeStore.update(() => $edges);
@@ -37,8 +34,10 @@
 </script>
 
 <div>
-  <Button on:click={uploadJson}>Upload Json</Button>
-  <Button on:click={() => onLayout("LR")}>Format</Button>
-  <Button on:click={() => validateForm()}>Validate</Button>
-  <Button>Summary Items</Button>
+  <FormInputModal />
+  {#if $form != undefined}
+    <Button on:click={() => onLayout("LR")} class="font-bold">Format</Button>
+    <Button on:click={() => validateForm()} class="font-bold">Validate</Button>
+    <FormSummaryItems />
+  {/if}
 </div>

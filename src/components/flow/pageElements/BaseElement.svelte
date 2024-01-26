@@ -10,6 +10,7 @@
   import PageHeading from "../pageContent/PageHeading.svelte";
   import TextAreaCharacterCount from "../pageContent/TextAreaCharacterCount.svelte";
   import Optional from "../pageContent/Optional.svelte";
+  import FileTypes from "../pageContent/FileUploadDetails.svelte";
 
   export let element: IElement;
   export let index: number;
@@ -65,6 +66,7 @@
     <TextAreaCharacterCount {element} />
   {/if}
 
+  <FileTypes {element} />
   <ValidationMessages {element} />
 </Card>
 <Popover defaultClass="nodrag" triggeredBy={`#${id}`} on:show{popoverVisible} placement="left">
