@@ -6,6 +6,7 @@
   import { validateFlow, validateIds } from "../../utils/FormValidator";
   import { useEdges, useNodes } from "@xyflow/svelte";
   import FormSummaryItems from "../modals/FormSummaryItems.svelte";
+  import TransformsAlert from "./alerts/TransformsAlert.svelte";
 
   const nodes = useNodes();
   const edges = useEdges();
@@ -40,4 +41,5 @@
     <Button on:click={() => validateForm()} class="font-bold">Validate</Button>
     <FormSummaryItems />
   {/if}
+  <TransformsAlert />
 </div>

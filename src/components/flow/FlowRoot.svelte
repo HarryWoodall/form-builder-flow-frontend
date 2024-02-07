@@ -1,11 +1,7 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import { SvelteFlow, Controls, Background, BackgroundVariant, MiniMap, Panel, type Node, type Edge, SvelteFlowProvider } from "@xyflow/svelte";
-  import FormInputModal from "../modals/FormInputModal.svelte";
   import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation } from "../../stores/appStore";
-
-  // 👇 this is important! You need to import the styles for Svelte Flow to work
-  import "@xyflow/svelte/dist/style.css";
   import FlowMenu from "./FlowMenu.svelte";
   import FormNode from "./nodes/FormNode.svelte";
   import FormDetails from "./sidebars/FormDetails.svelte";
@@ -14,6 +10,10 @@
   import type { FormSchema } from "../../models/FormSchema";
   import { generateFlowFromSchema } from "../../utils/FormParser";
   import getLayoutedElements from "../../utils/FormDisplay";
+  import { baseServerUrl } from "../../constants/serverConstants";
+
+  // 👇 this is important! You need to import the styles for Svelte Flow to work
+  import "@xyflow/svelte/dist/style.css";
 
   type SocketMessage = {
     type: string;
@@ -21,8 +21,12 @@
   };
 
   let nodes = writable<Node[]>([]);
-
   let edges = writable<Edge[]>([]);
+  let socket: WebSocket | undefined;
+  const snapGrid: [number, number] = [25, 25];
+  const nodeTypes = {
+    form: FormNode,
+  };
 
   nodeStore.subscribe((value) => {
     nodes.update(() => value);
@@ -32,15 +36,8 @@
     edges.update(() => value);
   });
 
-  const snapGrid: [number, number] = [25, 25];
-  const nodeTypes = {
-    form: FormNode,
-  };
-
-  //ws stuff
-  let socket: WebSocket | undefined;
   onMount(() => {
-    socket = new WebSocket("ws://localhost:3000/");
+    socket = new WebSocket(`ws://${baseServerUrl}/`);
     socket.addEventListener("open", () => {
       socket?.send("Client connected");
     });

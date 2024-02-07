@@ -2,9 +2,7 @@ import Dagre from "@dagrejs/dagre";
 import { Position, type Edge, type Node } from "@xyflow/svelte";
 import type { InvalidFlow } from "./FormValidator";
 
-// const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-const border = 50;
 const nodeWidth = 400;
 const nodeHeight = 150;
 

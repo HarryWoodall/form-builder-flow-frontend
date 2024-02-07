@@ -1,8 +1,9 @@
 import type { Edge, Node } from "@xyflow/svelte";
-import type { Behaviour, Condition, FormSchema, IElement, Reusable } from "../models/FormSchema";
+import type { BaseProperty, Behaviour, Condition, FormSchema, IElement, Option, Reusable } from "../models/FormSchema";
 import { nodes as nodeStore, edges as edgeStore, formFlowValidation } from "../stores/appStore";
 import { validateFlow } from "./FormValidator";
 import { capitalizeFirstLetter, splitByCapital } from "../helpers/stringHelpers";
+import { baseServerUrl } from "../constants/serverConstants";
 
 export type PageValidation = {
   isPageUnreachable: boolean;
@@ -163,4 +164,22 @@ function getSummaryDataAddAnother(element: IElement) {
   });
 
   return summaryItems;
+}
+
+export async function getReusableElement(element: IElement) {
+  const elementRef = (element as Reusable).ElementRef;
+  const data = await fetch(`http://${baseServerUrl}/reusableElement?element=${elementRef}`);
+  const reusableElement = (await data.json()) as IElement;
+  reusableElement.Properties = { ...reusableElement.Properties, ...element.Properties };
+
+  return reusableElement;
+}
+
+export async function transformLookup(element: IElement) {
+  const lookup = element.Lookup;
+  const data = await fetch(`http://${baseServerUrl}/lookup?lookup=${lookup}`);
+  const options = (await data.json()) as Option[];
+  element.Properties!.Options = options;
+
+  return element;
 }

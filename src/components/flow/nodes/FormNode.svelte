@@ -43,6 +43,7 @@
 
   formFlowValidation.subscribe((validation) => {
     if (!validation) return;
+    if (!page) return;
 
     var pageValidation: PageValidation = {
       isPageUnreachable: validation ? validation?.unreachablePages.some((invalidPage) => invalidPage.PageSlug == page.PageSlug) : false,
@@ -53,7 +54,6 @@
 
   form.subscribe((form) => {
     page = form!.Pages?.find((page) => page.PageSlug == data.pageId)!;
-
     if (!page) return;
   });
 

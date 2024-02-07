@@ -8,6 +8,3 @@
 {#if element.Properties && element.Properties.Hint}
   <P class="my-1 text-gray-400 italic">{@html element.Properties.Hint}</P>
 {/if}
-
-<style>
-</style>

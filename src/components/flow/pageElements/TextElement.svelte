@@ -9,11 +9,11 @@
   {#if element.Properties?.ListItems}
     <List>
       {#each element.Properties.ListItems as item}
-        <Heading tag="h2" customSize="font-semibold list-item" class="my-2">{item}</Heading>
+        <P class="font-semibold list-item my-2">{item}</P>
       {/each}
     </List>
   {:else}
-    <Heading tag="h2" customSize="font-bold">{element.Properties?.Text}</Heading>
+    <P class="font-bold">{@html element.Properties?.Text}</P>
   {/if}
 
   <P class="mb-1 text-gray-500">{element.Type}</P>

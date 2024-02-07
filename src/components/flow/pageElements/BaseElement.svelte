@@ -9,8 +9,9 @@
   import HintText from "../pageContent/HintText.svelte";
   import PageHeading from "../pageContent/PageHeading.svelte";
   import TextAreaCharacterCount from "../pageContent/TextAreaCharacterCount.svelte";
-  import Optional from "../pageContent/Optional.svelte";
+  import ElementStatus from "../pageContent/ElementStatus.svelte";
   import FileTypes from "../pageContent/FileUploadDetails.svelte";
+  import AddressProperties from "../pageContent/AddressProperties.svelte";
 
   export let element: IElement;
   export let index: number;
@@ -53,7 +54,7 @@
   on:mouseenter={mouseEnterCard}
   on:mouseleave={mouseLeaveCard}
 >
-  <Optional {element} />
+  <ElementStatus {element} />
   {#if type == "radio"}
     <PageHeading {element} />
     <HintText {element} />
@@ -63,10 +64,11 @@
   {:else}
     <PageHeading {element} />
     <HintText {element} />
+    <AddressProperties {element} />
+    <FileTypes {element} />
     <TextAreaCharacterCount {element} />
   {/if}
 
-  <FileTypes {element} />
   <ValidationMessages {element} />
 </Card>
 <Popover defaultClass="nodrag" triggeredBy={`#${id}`} on:show{popoverVisible} placement="left">

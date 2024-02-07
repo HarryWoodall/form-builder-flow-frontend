@@ -9,5 +9,9 @@
   <P class="my-1 text-green-500 font-semibold italic">Optional</P>
 {/if}
 
+{#if element.Properties && element.Properties.StockportPostcode}
+  <P class="my-1 text-green-500 font-semibold italic">Stockport</P>
+{/if}
+
 <style>
 </style>
