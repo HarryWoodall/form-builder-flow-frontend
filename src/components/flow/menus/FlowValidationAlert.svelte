@@ -5,6 +5,7 @@
   import {} from "flowbite-svelte";
   import { InfoCircleOutline } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
+  import { slide } from "svelte/transition";
 
   let hiddenBackdropFalse = true;
   let transitionParams = {
@@ -30,7 +31,10 @@
   };
 </script>
 
-<Button class="mx-4 font-bold" on:click={() => (hiddenBackdropFalse = false)}><InfoCircleOutline class="mr-2" /> Validation</Button>
+<Button
+  class="font-bold bg-transparent hover:bg-transparent border-2 border-transparent hover:border-orange-400  text-orange-400 mx-4"
+  on:click={() => (hiddenBackdropFalse = false)}><InfoCircleOutline class="mr-2" /> Validation</Button
+>
 
 <Drawer
   backdrop={false}

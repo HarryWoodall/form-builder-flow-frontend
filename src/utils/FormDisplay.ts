@@ -2,11 +2,11 @@ import Dagre from "@dagrejs/dagre";
 import { Position, type Edge, type Node } from "@xyflow/svelte";
 import type { InvalidFlow } from "./FormValidator";
 
-const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
 const nodeWidth = 400;
 const nodeHeight = 150;
 
 export function getLayoutedElements(nodes: Node[], edges: Edge[], direction = "TB", formFlowValidation?: InvalidFlow) {
+  const dagreGraph = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
   const isHorizontal = direction === "LR";
   dagreGraph.setGraph({ rankdir: direction });
 

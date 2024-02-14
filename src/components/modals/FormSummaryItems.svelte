@@ -20,7 +20,10 @@
   };
 </script>
 
-<Button on:click={() => (isOpen = true)} class="font-bold">Summary Items</Button>
+<Button
+  on:click={() => (isOpen = true)}
+  class="font-bold bg-transparent hover:bg-transparent border-2 border-transparent hover:border-orange-400  text-orange-400">Summary Items</Button
+>
 
 <Modal title="Summary Items" bind:open={isOpen} on:close={() => (isOpen = false)} class="p-1" outsideclose>
   <div class="flex gap-5 mt-0">

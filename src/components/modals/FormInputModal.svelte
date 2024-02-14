@@ -1,17 +1,22 @@
 <script lang="ts">
   import { Button, Modal, Textarea } from "flowbite-svelte";
-  import { form } from "../../stores/appStore";
+  import { currentModalOpen, form } from "../../stores/appStore";
   import { parseForm, generateFlowFromSchema } from "../../utils/FormParser";
   import exampleForm from "../../models/examples/exampleForm.json";
   import getLayoutedElements from "../../utils/FormDisplay";
   import { useEdges, useNodes } from "@xyflow/svelte";
   import { edges as edgeStore, nodes as nodeStore, formFlowValidation } from "../../stores/appStore";
+  import { EFormInputModal } from "../../constants/modalConstants";
 
   const nodes = useNodes();
   const edges = useEdges();
 
   let isOpen = false;
   let inputValue = "";
+
+  currentModalOpen.subscribe((value: null | string) => {
+    isOpen = value == EFormInputModal;
+  });
 
   const getForm = () => {
     const schema = parseForm(inputValue);
@@ -31,6 +36,13 @@
     $edges = layoutedElements.edges;
     nodes.update(() => layoutedElements.nodes);
     edges.update(() => layoutedElements.edges);
+
+    isOpen = false;
+    updateCurrentModal();
+  };
+
+  const updateCurrentModal = () => {
+    currentModalOpen.update(() => null);
   };
 
   const dummyData = () => {
@@ -38,9 +50,7 @@
   };
 </script>
 
-<Button on:click={() => (isOpen = true)} class="font-bold">Upload Json</Button>
-
-<Modal title="Upload Json" bind:open={isOpen} on:close={() => (isOpen = false)} outsideclose>
+<Modal title="Upload Json" bind:open={isOpen} on:close={() => updateCurrentModal()} outsideclose autoclose>
   <Textarea rows="20" bind:value={inputValue} />
   <svelte:fragment slot="footer">
     <Button on:click={getForm}>Create Form</Button>

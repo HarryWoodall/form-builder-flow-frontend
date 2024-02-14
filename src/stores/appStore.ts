@@ -11,8 +11,12 @@ export const propertyType = writable<"Page" | "Element" | undefined>();
 export const currentPropertyItem = writable<IElement | Page | undefined>();
 export const newForm = writable<boolean>();
 
+export const currentModalOpen = writable<string | null>();
+export const detailsPanelVisible = writable<boolean>(false);
+
 export const nodes = writable<Node[]>([]);
 export const edges = writable<Edge[]>([]);
 export const form = writable<FormSchema | undefined>();
 export const formFlowValidation = writable<InvalidFlow | undefined>();
+
 export const areTransformsAvailable = writable<boolean>(false);

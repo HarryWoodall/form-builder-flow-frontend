@@ -1,19 +1,23 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import { SvelteFlow, Controls, Background, BackgroundVariant, MiniMap, Panel, type Node, type Edge, SvelteFlowProvider } from "@xyflow/svelte";
-  import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation } from "../../stores/appStore";
-  import FlowMenu from "./FlowMenu.svelte";
+  import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation, detailsPanelVisible } from "../../stores/appStore";
+  import FlowMenuTopLeft from "./menus/FlowMenuTopLeft.svelte";
+  import FlowMenuTopCenter from "./menus/FlowMenuTopCenter.svelte";
   import FormNode from "./nodes/FormNode.svelte";
-  import FormDetails from "./sidebars/FormDetails.svelte";
-  import FlowValidationAlert from "./sidebars/FlowValidationAlert.svelte";
+  import FormList from "../modals/FormList.svelte";
   import { onMount } from "svelte";
   import type { FormSchema } from "../../models/FormSchema";
   import { generateFlowFromSchema } from "../../utils/FormParser";
   import getLayoutedElements from "../../utils/FormDisplay";
   import { baseServerUrl } from "../../constants/serverConstants";
+  import TopMenu from "../containers/TopMenu.svelte";
 
   // 👇 this is important! You need to import the styles for Svelte Flow to work
   import "@xyflow/svelte/dist/style.css";
+  import FormInputModal from "../modals/FormInputModal.svelte";
+  import FlowMenuTopRight from "./menus/FlowMenuTopRight.svelte";
+  import FlowDetailsDraw from "./menus/FlowDetailsDraw.svelte";
 
   type SocketMessage = {
     type: string;
@@ -71,17 +75,16 @@
 <div style:height="100vh">
   <SvelteFlowProvider>
     <SvelteFlow {nodeTypes} {nodes} {edges} {snapGrid} fitView minZoom={0.1} on:nodeclick={(event) => console.log("on node click", event.detail.node)}>
+      <TopMenu />
       <Panel position="top-left">
-        <FlowMenu />
+        <FlowMenuTopLeft />
       </Panel>
-      {#if $form != undefined}
+      <Panel position="top-center">
+        <FlowMenuTopCenter />
+      </Panel>
+      {#if $form != undefined && !$detailsPanelVisible}
         <Panel position="top-right">
-          <div class="flex justify-center items-center">
-            {#if $formFlowValidation && ($formFlowValidation?.invalidPageSlugs.length > 0 || $formFlowValidation?.unreachablePages.length > 0)}
-              <FlowValidationAlert />
-            {/if}
-            <FormDetails form={$form} />
-          </div>
+          <FlowMenuTopRight />
         </Panel>
       {/if}
 
@@ -89,5 +92,11 @@
       <Background variant={BackgroundVariant.Dots} />
       <MiniMap style="background-color: #aaa; z-index: 4" maskColor="#f00" width={300} height={200} />
     </SvelteFlow>
+    {#if $form}
+      <FlowDetailsDraw form={$form} />
+    {/if}
+
+    <FormInputModal />
+    <FormList />
   </SvelteFlowProvider>
 </div>

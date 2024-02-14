@@ -3,11 +3,11 @@
   import type { IElement } from "../../../models/FormSchema";
   import { onMount } from "svelte";
   import { transformLookup } from "../../../utils/FormParser";
+  import { form } from "../../../stores/appStore";
 
   export let element: IElement;
 
   let isTransforming = false;
-
   let options = element.Properties?.Options?.map((option) => {
     const listItem: ListGroupItemType = {
       name: option.Value,
@@ -16,6 +16,18 @@
     };
 
     return listItem;
+  });
+
+  form.subscribe(() => {
+    options = element.Properties?.Options?.map((option) => {
+      const listItem: ListGroupItemType = {
+        name: option.Value,
+        conditionalElement: option.ConditionalElementId,
+        hint: option.Hint,
+      };
+
+      return listItem;
+    });
   });
 
   onMount(async () => {

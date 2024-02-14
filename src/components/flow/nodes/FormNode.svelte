@@ -5,6 +5,7 @@
   import PageElement from "../pageElements/PageElement.svelte";
   import type { PageValidation } from "../../../utils/FormParser";
   import { form, formFlowValidation, nodes } from "../../../stores/appStore";
+  import PageBanner from "../pageElements/PageBanner.svelte";
 
   type $$Props = NodeProps;
   export let id: $$Props["id"];
@@ -38,7 +39,7 @@
 
   let page: Page = $form!.Pages?.find((page) => page.PageSlug == data.pageId)!;
   let validation: PageValidation = data.formValidation;
-  const pageButton = page.Elements?.find((element) => element.Type == "Button");
+  let pageButton = page.Elements?.find((element) => element.Type == "Button");
   let cardClass = `p-5 border-solid bg-white ${validation.isPageUnreachable ? "border-orange-400 bg-red-300" : ""} border-2`;
 
   formFlowValidation.subscribe((validation) => {
@@ -55,6 +56,8 @@
   form.subscribe((form) => {
     page = form!.Pages?.find((page) => page.PageSlug == data.pageId)!;
     if (!page) return;
+
+    pageButton = page.Elements?.find((element) => element.Type == "Button");
   });
 
   const { fitView } = useSvelteFlow();
@@ -75,10 +78,17 @@
       {/if}
 
       {#if !page.HideTitle}
-        <Heading tag="h2" customSize="text-2xl font-bold">{page.Title}</Heading>
+        <Heading tag="h2" customSize="text-2xl font-bold">
+          {page.Title}
+          {#if page.DisplayOptionalInTitle}
+            <span class="text-gray-500 italic">(Optional)</span>
+          {/if}
+        </Heading>
       {/if}
 
       <P class="mb-3 text-gray-500">{page.PageSlug}</P>
+      <PageBanner {page} />
+
       <ul class="mb-6">
         {#if page.Elements}
           {#each page.Elements as element, index}
