@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button, Modal, Search, Spinner, List, Li, P } from "flowbite-svelte";
   import { useEdges, useNodes } from "@xyflow/svelte";
-  import { edges as edgeStore, nodes as nodeStore, formFlowValidation, form, currentModalOpen } from "../../stores/appStore";
+  import { edges as edgeStore, nodes as nodeStore, formFlowValidation, form, currentModalOpen, orientation } from "../../stores/appStore";
   import { onMount } from "svelte";
   import { baseServerUrl } from "../../constants/serverConstants";
   import { generateFlowFromSchema, parseForm } from "../../utils/FormParser";
@@ -45,7 +45,7 @@
 
     generateFlowFromSchema(schema);
 
-    const layoutedElements = getLayoutedElements($nodes, $edges, "LR", $formFlowValidation);
+    const layoutedElements = getLayoutedElements($nodes, $edges, $orientation || "LR", $formFlowValidation);
 
     nodeStore.update(() => $nodes);
     edgeStore.update(() => $edges);
@@ -72,7 +72,6 @@
     try {
       const res = await fetch(`http://${baseServerUrl}/form?name=${innerText}`);
       const data = await res.json();
-      console.log(data);
       getForm(data);
     } catch (err) {
       result = ["Something went wrong"];

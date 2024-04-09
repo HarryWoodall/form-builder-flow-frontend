@@ -31,7 +31,16 @@
   };
 </script>
 
-<Drawer backdrop={false} transitionType="fly" {transitionParams} bind:hidden={isHidden} id="details-sidebar" placement="right" divClass="bg-green-400 p-4 z-50">
+<Drawer
+  backdrop={false}
+  transitionType="fly"
+  activateClickOutside={false}
+  {transitionParams}
+  bind:hidden={isHidden}
+  id="details-sidebar"
+  placement="right"
+  divClass="bg-green-400 p-4 z-50"
+>
   <div class="flex justify-start items-start">
     <Heading tag="h1" class="mb-4 font-bold pr-3 text-white" customSize="text-3xl">{form.FormName}</Heading>
     <CloseButton on:click={handleClose} class="mb-4 text-white" />

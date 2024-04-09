@@ -1,23 +1,35 @@
 <script lang="ts">
-  import { Button, Indicator, Modal, P } from "flowbite-svelte";
+  import { Button, Indicator, Modal, P, Heading } from "flowbite-svelte";
   import { form } from "../../stores/appStore";
   import { getSummaryData, type SummaryItem } from "../../utils/FormParser";
+  import { onMount } from "svelte";
 
   let isOpen = false;
-
-  const summaryItems = getSummaryData($form!);
+  let summaryItems: SummaryItem[] | undefined;
+  const duplidateMap: { label: string; questionIds: string[] }[] = [];
 
   const getClass = (item: SummaryItem) => {
-    let base = "font-semibold my-2";
-
-    if (item.isOptional) base += " italic";
-    if (item.isConditionalElement) base += " text-amber-600";
-    if (item.isAddAnotherElement) base += " text-green-400";
-
-    if (!item.isOptional && !item.isConditionalElement && !item.isAddAnotherElement) base += " text-gray-500";
+    let base = "font-semibold";
 
     return base;
   };
+
+  onMount(async () => {
+    summaryItems = await getSummaryData($form!);
+
+    for (let summaryItem of summaryItems) {
+      const duplicates = summaryItems.filter(
+        (item) => item.questionId != summaryItem.questionId && !duplidateMap.some((d) => d.label == summaryItem.label) && item.label == summaryItem.label
+      );
+
+      if (duplicates.length) {
+        duplidateMap.push({
+          label: summaryItem.label!,
+          questionIds: [summaryItem.questionId!, ...duplicates.map((item) => item.questionId!)],
+        });
+      }
+    }
+  });
 </script>
 
 <Button
@@ -26,16 +38,26 @@
 >
 
 <Modal title="Summary Items" bind:open={isOpen} on:close={() => (isOpen = false)} class="p-1" outsideclose>
-  <div class="flex gap-5 mt-0">
-    <P class="text-white bg-amber-600 p-2 rounded-full font-bold" size="sm">Optional</P>
-    <P class="text-white bg-green-400 p-2 rounded-full font-bold" size="sm">Add another</P>
-  </div>
-
   <ul class="max-h-[600px] overflow-x-auto">
-    {#each summaryItems as item}
-      <li>
-        <P size="lg" class={getClass(item)}>{item.label}</P>
-      </li>
-    {/each}
+    {#if summaryItems}
+      <Heading tag="h2" customSize="text-3xl font-bold" class="mb-3">Duplicates</Heading>
+      {#each duplidateMap as item}
+        <li>
+          <P size="lg" class="mt-3 font-bold">{item.label}</P>
+          {#each item.questionIds as id}
+            <li>
+              <P>{id}</P>
+            </li>
+          {/each}
+        </li>
+      {/each}
+
+      <Heading tag="h2" customSize="text-3xl font-bold" class="mt-5 mb-3">Labels</Heading>
+      {#each summaryItems as item}
+        <li>
+          <P size="lg" class={getClass(item)}>{item.label}</P>
+        </li>
+      {/each}
+    {/if}
   </ul>
 </Modal>

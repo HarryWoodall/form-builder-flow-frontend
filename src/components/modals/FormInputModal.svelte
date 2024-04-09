@@ -5,7 +5,7 @@
   import exampleForm from "../../models/examples/exampleForm.json";
   import getLayoutedElements from "../../utils/FormDisplay";
   import { useEdges, useNodes } from "@xyflow/svelte";
-  import { edges as edgeStore, nodes as nodeStore, formFlowValidation } from "../../stores/appStore";
+  import { edges as edgeStore, nodes as nodeStore, formFlowValidation, orientation } from "../../stores/appStore";
   import { EFormInputModal } from "../../constants/modalConstants";
 
   const nodes = useNodes();
@@ -27,7 +27,7 @@
 
     generateFlowFromSchema(schema);
 
-    const layoutedElements = getLayoutedElements($nodes, $edges, "LR", $formFlowValidation);
+    const layoutedElements = getLayoutedElements($nodes, $edges, $orientation || "LR", $formFlowValidation);
 
     nodeStore.update(() => $nodes);
     edgeStore.update(() => $edges);

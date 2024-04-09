@@ -1,7 +1,7 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import { SvelteFlow, Controls, Background, BackgroundVariant, MiniMap, Panel, type Node, type Edge, SvelteFlowProvider } from "@xyflow/svelte";
-  import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation, detailsPanelVisible } from "../../stores/appStore";
+  import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation, detailsPanelVisible, orientation } from "../../stores/appStore";
   import FlowMenuTopLeft from "./menus/FlowMenuTopLeft.svelte";
   import FlowMenuTopCenter from "./menus/FlowMenuTopCenter.svelte";
   import FormNode from "./nodes/FormNode.svelte";
@@ -40,6 +40,8 @@
     edges.update(() => value);
   });
 
+  orientation.update(() => "LR");
+
   onMount(() => {
     socket = new WebSocket(`ws://${baseServerUrl}/`);
     socket.addEventListener("open", () => {
@@ -56,7 +58,7 @@
         generateFlowFromSchema(schema);
         form.update(() => schema);
 
-        const layoutedElements = getLayoutedElements($nodes, $edges, "LR", $formFlowValidation);
+        const layoutedElements = getLayoutedElements($nodes, $edges, $orientation || "LR", $formFlowValidation);
 
         nodeStore.update(() => $nodes);
         edgeStore.update(() => $edges);

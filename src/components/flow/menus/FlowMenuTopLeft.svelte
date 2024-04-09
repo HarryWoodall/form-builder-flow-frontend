@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from "flowbite-svelte";
   import getLayoutedElements from "../../../utils/FormDisplay";
-  import { edges as edgeStore, nodes as nodeStore, form, formFlowValidation, currentModalOpen } from "../../../stores/appStore";
+  import { edges as edgeStore, nodes as nodeStore, form, formFlowValidation, currentModalOpen, orientation } from "../../../stores/appStore";
   import { validateFlow, validateIds } from "../../../utils/FormValidator";
   import { useEdges, useNodes } from "@xyflow/svelte";
   import FormSummaryItems from "../../modals/FormSummaryItems.svelte";
@@ -47,7 +47,7 @@
   >
   {#if $form != undefined}
     <Button
-      on:click={() => onLayout("LR")}
+      on:click={() => onLayout($orientation || "LR")}
       class="font-bold bg-transparent hover:bg-transparent border-2 border-transparent hover:border-orange-400  text-orange-400">Format</Button
     >
     <FormSummaryItems />

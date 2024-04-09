@@ -19,4 +19,6 @@ export const edges = writable<Edge[]>([]);
 export const form = writable<FormSchema | undefined>();
 export const formFlowValidation = writable<InvalidFlow | undefined>();
 
+export const orientation = writable<"LR" | "TB">();
+
 export const areTransformsAvailable = writable<boolean>(false);

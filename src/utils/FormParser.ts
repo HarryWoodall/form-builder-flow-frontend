@@ -1,9 +1,10 @@
 import type { Edge, Node } from "@xyflow/svelte";
 import type { BaseProperty, Behaviour, Condition, FormSchema, IElement, Option, Reusable } from "../models/FormSchema";
-import { nodes as nodeStore, edges as edgeStore, formFlowValidation } from "../stores/appStore";
+import { nodes as nodeStore, edges as edgeStore, formFlowValidation, areTransformsAvailable } from "../stores/appStore";
 import { validateFlow } from "./FormValidator";
 import { capitalizeFirstLetter, splitByCapital } from "../helpers/stringHelpers";
 import { baseServerUrl } from "../constants/serverConstants";
+import { getNodeId, getPageFromSlug, getPageIndex } from "../helpers/formHelpers";
 
 export type PageValidation = {
   isPageUnreachable: boolean;
@@ -12,9 +13,11 @@ export type PageValidation = {
 export type SummaryItem = {
   label?: string;
   value?: string;
+  questionId?: string;
   isOptional: boolean;
   isConditionalElement: boolean;
   isAddAnotherElement: boolean;
+  index: number; //TODO: remove this and references
 };
 
 export function parseForm(form: string) {
@@ -48,7 +51,7 @@ export function generateFlowFromSchema(form: FormSchema) {
     };
 
     const newNode: Node = {
-      id: pageId,
+      id: getNodeId(form, form.Pages[i]),
       type: "form",
       position: {
         x: 0,
@@ -56,6 +59,8 @@ export function generateFlowFromSchema(form: FormSchema) {
       },
       data: { pageId, formValidation },
     };
+
+    // console.log(newNode);
 
     const connections: Edge[] = [];
 
@@ -68,47 +73,86 @@ export function generateFlowFromSchema(form: FormSchema) {
         else return;
       }
 
-      const newEdge: Edge = {
-        id: `${currentPage.PageSlug}-${behaviourPageSlug}-${index}`,
-        source: currentPage.PageSlug as string,
-        sourceHandle: "start",
-        target: (behaviourPageSlug as string) || "unknown",
-        targetHandle: "end",
-        style: "stroke: orange; stroke-width: 2",
-        labelStyle: "z-index: 9999; border: 1px solid orange; max-width: 100px; font-weight: bold; background-color: white; border-radius: 10px; padding:",
-      };
+      let newEdge: Edge | undefined;
 
-      if (behaviour.conditions && behaviour.conditions?.length > 0) {
-        let conditionText = "";
+      const targetPages = form.Pages?.filter((page) => page.PageSlug?.toLowerCase() == (behaviourPageSlug as string).toLowerCase())!;
 
-        behaviour.conditions.forEach((condition) => {
-          const conditionKey = Object.keys(condition).find((key) => key.toLowerCase() === "questionid") as keyof Condition;
-          const conditionQuestionId = condition[conditionKey];
-          conditionText += `${conditionQuestionId}: ${condition.comparisonValue}`;
-        });
-        newEdge.label = conditionText;
-      }
+      targetPages.forEach((page, targetIndex) => {
+        let labelStyle =
+          "z-index: 9999; border: 1px solid orange; max-width: 100px; font-weight: bold; background-color: white; border-radius: 10px; padding: 5px";
+        let style = "stroke: orange; stroke-width: 2";
 
-      connections.push(newEdge);
+        if (page.RenderConditions && page.RenderConditions.length > 0) {
+          labelStyle =
+            "z-index: 9999; border: 1px solid green; max-width: 100px; font-weight: bold; background-color: white; border-radius: 10px; padding: 5px";
+          style = "stroke: green; stroke-width: 2";
+        }
+
+        if (targetIndex > 0) {
+          console.log(targetPages);
+          console.log("PageIndex: ", getPageIndex(form, currentPage));
+        }
+
+        newEdge = {
+          id: `${currentPage.PageSlug.toLowerCase()}-${behaviourPageSlug.toLowerCase()}-${getPageIndex(form, currentPage)}-${index}-${targetIndex}`,
+          source: getNodeId(form, currentPage),
+          sourceHandle: "start",
+          target: getNodeId(form, page) || "unknown",
+          targetHandle: "end",
+          style: style,
+          labelStyle: labelStyle,
+          type: "smoothstep",
+        };
+
+        if (behaviour.conditions && behaviour.conditions?.length > 0) {
+          let conditionText = "";
+
+          behaviour.conditions.forEach((condition) => {
+            const conditionKey = Object.keys(condition).find((key) => key.toLowerCase() === "questionid") as keyof Condition;
+            const conditionQuestionId = condition[conditionKey];
+            conditionText += `${conditionQuestionId}: ${condition.comparisonValue}`;
+          });
+          newEdge.label = conditionText;
+        }
+
+        if (page.RenderConditions && page.RenderConditions.length > 0) {
+          let conditionText = "";
+
+          page.RenderConditions.forEach((condition) => {
+            const conditionKey = Object.keys(condition).find((key) => key.toLowerCase() === "questionid") as keyof Condition;
+            const conditionQuestionId = condition[conditionKey];
+            conditionText += `${conditionQuestionId}: ${condition.comparisonValue}`;
+          });
+          newEdge.label = conditionText;
+        }
+
+        // console.log(newEdge);
+        connections.push(newEdge);
+      });
     });
 
     edges.push(...connections);
     nodes.push(newNode);
   }
 
-  console.log(edges);
+  // console.log(edges);
 
   nodeStore.update(() => nodes);
   edgeStore.update(() => edges);
 }
 
-export function getSummaryData(form: FormSchema) {
+export async function getSummaryData(form: FormSchema) {
   const pages = form.Pages;
   const summaryItems: SummaryItem[] = [];
+  let transformsAvailable = false;
+  areTransformsAvailable.subscribe((value) => {
+    transformsAvailable = value;
+  });
 
-  pages?.forEach((page) => {
-    page.Elements?.forEach((element) => {
-      if (!element.Properties?.QuestionId) return;
+  for (let [pageIndex, page] of pages!.entries()) {
+    for (let [elementIndex, element] of page.Elements!.entries()) {
+      if (!element.Properties?.QuestionId) break;
+      if (element.Type == "Summary") break;
 
       let label = element.Properties.SummaryLabel || element.Properties.Label;
 
@@ -117,11 +161,17 @@ export function getSummaryData(form: FormSchema) {
           label = page.Title;
           break;
         case "Reusable":
-          label = label || capitalizeFirstLetter(splitByCapital((element as Reusable).ElementRef!));
+          if (transformsAvailable) {
+            const resuableElement = await getReusableElement(element);
+            label = resuableElement.Properties?.Label;
+          } else {
+            label = label || capitalizeFirstLetter(splitByCapital((element as Reusable).ElementRef!));
+          }
+
           break;
         case "AddAnother":
-          summaryItems.push(...getSummaryDataAddAnother(element));
-          return;
+          summaryItems.push(...(await getSummaryDataAddAnother(element, transformsAvailable, pageIndex, elementIndex)));
+          break;
         default:
           label = label || element.Type!;
       }
@@ -129,39 +179,48 @@ export function getSummaryData(form: FormSchema) {
       summaryItems.push({
         label: label?.toString(),
         value: "string",
+        questionId: element.Properties.QuestionId,
         isOptional: element.Properties.Optional || false,
         isConditionalElement: element.Properties.IsConditionalElement || false,
         isAddAnotherElement: false,
+        index: parseInt(`${pageIndex}${elementIndex}`),
       });
-    });
-  });
+    }
+  }
 
   return summaryItems;
 }
 
-function getSummaryDataAddAnother(element: IElement) {
+async function getSummaryDataAddAnother(element: IElement, transformsAvailable: boolean, pageIndex: number, elementIndex: number): Promise<SummaryItem[]> {
   let summaryItems: SummaryItem[] = [];
-  element.Properties?.Elements?.forEach((element) => {
-    if (!element.Properties?.QuestionId) return;
+  for (let [index, innerElement] of element.Properties!.Elements!.entries()) {
+    if (!innerElement.Properties?.QuestionId) break;
 
-    let label = element.Properties.SummaryLabel || element.Properties.Label;
+    let label = innerElement.Properties.SummaryLabel || innerElement.Properties.Label;
 
-    switch (element.Type) {
+    switch (innerElement.Type) {
       case "Reusable":
-        label = label || capitalizeFirstLetter(splitByCapital((element as Reusable).ElementRef!));
+        if (transformsAvailable) {
+          const resuableElement = await getReusableElement(innerElement);
+          label = resuableElement.Properties?.Label;
+        } else {
+          label = label || capitalizeFirstLetter(splitByCapital((innerElement as Reusable).ElementRef!));
+        }
         break;
       default:
-        label = label || element.Type!;
+        label = label || innerElement.Type!;
     }
 
     summaryItems.push({
       label: label?.toString(),
       value: "string",
-      isOptional: element.Properties.Optional || false,
-      isConditionalElement: element.Properties.IsConditionalElement || false,
+      questionId: innerElement.Properties.QuestionId,
+      isOptional: innerElement.Properties.Optional || false,
+      isConditionalElement: innerElement.Properties.IsConditionalElement || false,
       isAddAnotherElement: true,
+      index: parseInt(`${pageIndex}${elementIndex}`),
     });
-  });
+  }
 
   return summaryItems;
 }
