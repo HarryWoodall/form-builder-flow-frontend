@@ -12,6 +12,7 @@
   import ElementStatus from "../pageContent/ElementStatus.svelte";
   import FileTypes from "../pageContent/FileUploadDetails.svelte";
   import AddressProperties from "../pageContent/AddressProperties.svelte";
+  import ElementNoteForm from "../../notes/ElementNoteForm.svelte";
 
   export let element: IElement;
   export let index: number;
@@ -70,6 +71,7 @@
   {/if}
 
   <ValidationMessages {element} />
+  <!-- <ElementNoteForm /> -->
 </Card>
 <Popover defaultClass="nodrag" triggeredBy={`#${id}`} on:show{popoverVisible} placement="left">
   <Heading tag="h2" customSize="text-xl" class="bg-orange-500 rounded-t p-2 text-white">Properties</Heading>

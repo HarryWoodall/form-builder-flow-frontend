@@ -18,11 +18,7 @@
   import FormInputModal from "../modals/FormInputModal.svelte";
   import FlowMenuTopRight from "./menus/FlowMenuTopRight.svelte";
   import FlowDetailsDraw from "./menus/FlowDetailsDraw.svelte";
-
-  type SocketMessage = {
-    type: string;
-    value: unknown;
-  };
+  import NoteDeletionConfirmationModal from "../modals/NoteDeletionConfirmationModal.svelte";
 
   let nodes = writable<Node[]>([]);
   let edges = writable<Edge[]>([]);
@@ -100,5 +96,6 @@
 
     <FormInputModal />
     <FormList />
+    <NoteDeletionConfirmationModal />
   </SvelteFlowProvider>
 </div>

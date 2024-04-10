@@ -1,6 +1,6 @@
 import type { Edge, Node } from "@xyflow/svelte";
 import type { BaseProperty, Behaviour, Condition, FormSchema, IElement, Option, Reusable } from "../models/FormSchema";
-import { nodes as nodeStore, edges as edgeStore, formFlowValidation, areTransformsAvailable } from "../stores/appStore";
+import { nodes as nodeStore, edges as edgeStore, formFlowValidation, areTransformsAvailable, formNotes } from "../stores/appStore";
 import { validateFlow } from "./FormValidator";
 import { capitalizeFirstLetter, splitByCapital } from "../helpers/stringHelpers";
 import { baseServerUrl } from "../constants/serverConstants";
@@ -126,7 +126,6 @@ export function generateFlowFromSchema(form: FormSchema) {
           newEdge.label = conditionText;
         }
 
-        // console.log(newEdge);
         connections.push(newEdge);
       });
     });
@@ -134,11 +133,27 @@ export function generateFlowFromSchema(form: FormSchema) {
     edges.push(...connections);
     nodes.push(newNode);
   }
-
-  // console.log(edges);
-
   nodeStore.update(() => nodes);
   edgeStore.update(() => edges);
+
+  getFormNotes(form.BaseURL!);
+}
+
+async function getFormNotes(formName: string) {
+  let transformsAvailable = false;
+  console.log(formName);
+  areTransformsAvailable.subscribe((value) => {
+    transformsAvailable = value;
+  });
+
+  if (!transformsAvailable) return;
+
+  const res = await fetch(`http://localhost:3100/getFormNotes?formName=${formName}`);
+  const notes = await res.json();
+
+  console.log("notes: ", notes);
+
+  formNotes.update(() => notes);
 }
 
 export async function getSummaryData(form: FormSchema) {

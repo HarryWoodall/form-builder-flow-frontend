@@ -2,6 +2,7 @@ import { writable } from "svelte/store";
 import type { FormSchema, IElement, Page } from "../models/FormSchema";
 import type { Edge, Node } from "@xyflow/svelte";
 import type { InvalidFlow } from "../utils/FormValidator";
+import type { Note } from "../models/Notes";
 
 export const propertyArrayModalOpen = writable<boolean>(false);
 export const summaryArrayModalOpen = writable<boolean>(false);
@@ -18,6 +19,8 @@ export const nodes = writable<Node[]>([]);
 export const edges = writable<Edge[]>([]);
 export const form = writable<FormSchema | undefined>();
 export const formFlowValidation = writable<InvalidFlow | undefined>();
+export const formNotes = writable<Note[] | undefined>();
+export const activeNote = writable<string | undefined>();
 
 export const orientation = writable<"LR" | "TB">();
 
