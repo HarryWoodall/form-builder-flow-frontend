@@ -37,9 +37,9 @@
     } catch (e) {
       console.log(e);
     }
-  };
 
-  console.log("note form");
+    text = "";
+  };
 </script>
 
 <Button class="bg-red-300 w-1/6 hover:bg-red-400 rounded-none -mt-0.5 rounded-b-lg"><AnnotationSolid class="w-3 h-3 text-white dark:text-white" /></Button>

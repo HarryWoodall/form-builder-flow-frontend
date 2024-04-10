@@ -5,6 +5,7 @@
   import { sineIn } from "svelte/easing";
   import { InfoCircleOutline } from "flowbite-svelte-icons";
   import { detailsPanelVisible, form as Form } from "../../../stores/appStore";
+  import FormNotesOverview from "./FormNotesOverview.svelte";
 
   export let form: FormSchema;
 
@@ -39,30 +40,34 @@
   bind:hidden={isHidden}
   id="details-sidebar"
   placement="right"
-  divClass="bg-green-400 p-4 z-50"
+  divClass="bg-green-400 z-50 h-screen"
 >
-  <div class="flex justify-start items-start">
-    <Heading tag="h1" class="mb-4 font-bold pr-3 text-white" customSize="text-3xl">{form.FormName}</Heading>
-    <CloseButton on:click={handleClose} class="mb-4 text-white" />
+  <CloseButton on:click={handleClose} class="mb-4 text-white absolute right-8 top-3" />
+  <div class="h-screen overflow-auto p-4">
+    <div class="flex justify-start items-start">
+      <Heading tag="h1" class="mb-4 font-bold pr-3 text-white" customSize="text-3xl">{form.FormName}</Heading>
+    </div>
+
+    <P class="font-bold text-white" size="lg">Base Url</P>
+    <P class="text-green-200 mb-4" size="base">{form.BaseURL}</P>
+
+    <P class="font-bold text-white" size="lg">Start page url</P>
+    <P class="text-green-200 mb-4" size="base">{form.StartPageUrl}</P>
+
+    <P class="font-bold text-white" size="lg">Availibility</P>
+
+    {#each availibility as item}
+      {#if item.IsAvailable}
+        <A
+          href={"https://" + item.Environment?.toLowerCase() + "-formbuilder-origin.smbcdigital.net/" + form.BaseURL}
+          target="_blank"
+          class={getAvailibilityClass(item.IsAvailable)}
+          size="lg">{item.Environment?.toUpperCase()}</A
+        >
+      {:else}
+        <P class={getAvailibilityClass(item.IsAvailable)} size="lg">{item.Environment?.toUpperCase()}</P>{/if}
+    {/each}
+
+    <FormNotesOverview />
   </div>
-
-  <P class="font-bold text-white" size="lg">Base Url</P>
-  <P class="text-green-200 mb-4" size="base">{form.BaseURL}</P>
-
-  <P class="font-bold text-white" size="lg">Start page url</P>
-  <P class="text-green-200 mb-4" size="base">{form.StartPageUrl}</P>
-
-  <P class="font-bold text-white" size="lg">Availibility</P>
-
-  {#each availibility as item}
-    {#if item.IsAvailable}
-      <A
-        href={"https://" + item.Environment?.toLowerCase() + "-formbuilder-origin.smbcdigital.net/" + form.BaseURL}
-        target="_blank"
-        class={getAvailibilityClass(item.IsAvailable)}
-        size="lg">{item.Environment?.toUpperCase()}</A
-      >
-    {:else}
-      <P class={getAvailibilityClass(item.IsAvailable)} size="lg">{item.Environment?.toUpperCase()}</P>{/if}
-  {/each}
 </Drawer>

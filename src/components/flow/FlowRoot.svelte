@@ -19,6 +19,7 @@
   import FlowMenuTopRight from "./menus/FlowMenuTopRight.svelte";
   import FlowDetailsDraw from "./menus/FlowDetailsDraw.svelte";
   import NoteDeletionConfirmationModal from "../modals/NoteDeletionConfirmationModal.svelte";
+  import FormNotesDeletionConfirmationModal from "../modals/FormNotesDeletionConfirmationModal.svelte";
 
   let nodes = writable<Node[]>([]);
   let edges = writable<Edge[]>([]);
@@ -97,5 +98,6 @@
     <FormInputModal />
     <FormList />
     <NoteDeletionConfirmationModal />
+    <FormNotesDeletionConfirmationModal />
   </SvelteFlowProvider>
 </div>

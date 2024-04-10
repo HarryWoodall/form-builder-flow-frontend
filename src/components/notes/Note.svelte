@@ -63,7 +63,7 @@
     {#if note.questionId}
       <h3 class="font-normal text-gray-700 dark:text-gray-400 leading-tight">{note.questionId}</h3>
     {/if}
-    <p class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">{note.text}</p>
+    <p class="mb-2 text-xl italic font-semibold p-3 tracking-tight text-gray-900 dark:text-white">{note.text}</p>
   {:else}
     <Textarea class="nodrag" rows="4" name="note" bind:value={note.text} />
     <div class="flex justify-between">
