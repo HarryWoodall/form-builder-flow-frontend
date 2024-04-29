@@ -3,9 +3,11 @@
   import { formFlowValidation, nodes } from "../../../stores/appStore";
   import { useSvelteFlow } from "@xyflow/svelte";
   import {} from "flowbite-svelte";
-  import { InfoCircleOutline } from "flowbite-svelte-icons";
+  import { InfoCircleSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
-  import { slide } from "svelte/transition";
+  import PageTitleValidationOverview from "./validation/PageTitleValidationOverview.svelte";
+  import SpellCheckValidationOverview from "./validation/SpellcheckValidationOverview.svelte";
+  import BackButtonValidationOverview from "./validation/BackButtonValidationOverview.svelte";
 
   let hiddenBackdropFalse = true;
   let transitionParams = {
@@ -32,8 +34,9 @@
 </script>
 
 <Button
-  class="font-bold bg-transparent hover:bg-transparent border-2 border-transparent hover:border-orange-400  text-orange-400 mx-4"
-  on:click={() => (hiddenBackdropFalse = false)}><InfoCircleOutline class="mr-2" /> Validation</Button
+  class="absolute top-20 right-0 font-bold bg-transparent hover:bg-transparent border-2 border-transparent hover:text-orange-600  text-orange-400"
+  pill={true}
+  on:click={() => (hiddenBackdropFalse = false)}><InfoCircleSolid class="w-12 h-12" /></Button
 >
 
 <Drawer
@@ -43,11 +46,11 @@
   bind:hidden={hiddenBackdropFalse}
   id="validation-sidebar"
   placement="right"
-  divClass="bg-white p-4 z-50"
+  divClass="bg-amber-600 p-4 z-50 h-screen overflow-y-auto overflow-x-hidden shadow-lg"
 >
   <div class="flex items-center">
     <h5 id="drawer-label" class="inline-flex justify-center items-center mb-4 text-base font-semibold text-gray-500 dark:text-gray-400">
-      <span class="text-3xl">Form Errors</span>
+      <span class="text-3xl font-bold text-white">Form Errors</span>
     </h5>
     <CloseButton on:click={() => (hiddenBackdropFalse = true)} class="mb-4 dark:text-white" />
   </div>
@@ -80,4 +83,9 @@
       </div>
     </div>
   {/if}
+  <div class="">
+    <PageTitleValidationOverview />
+    <BackButtonValidationOverview />
+    <SpellCheckValidationOverview />
+  </div>
 </Drawer>

@@ -2,12 +2,13 @@
   import { Button } from "flowbite-svelte";
   import getLayoutedElements from "../../../utils/FormDisplay";
   import { edges as edgeStore, nodes as nodeStore, form, formFlowValidation, currentModalOpen, orientation } from "../../../stores/appStore";
-  import { validateFlow, validateIds } from "../../../utils/FormValidator";
+  import { validateFlow, validateIds } from "../../../validators/FormValidators";
   import { useEdges, useNodes } from "@xyflow/svelte";
   import FormSummaryItems from "../../modals/FormSummaryItems.svelte";
   import TransformsAlert from "../alerts/TransformsAlert.svelte";
   import { EFormInputModal } from "../../../constants/modalConstants";
   import { slide } from "svelte/transition";
+  import SettingsMenu from "./SettingsMenu.svelte";
 
   const nodes = useNodes();
   const edges = useEdges();
@@ -53,4 +54,5 @@
     <FormSummaryItems />
   {/if}
   <TransformsAlert />
+  <SettingsMenu />
 </div>

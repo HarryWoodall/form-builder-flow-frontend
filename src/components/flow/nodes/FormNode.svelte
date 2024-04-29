@@ -4,11 +4,21 @@
   import { P, Heading, Card, Button } from "flowbite-svelte";
   import PageElement from "../pageElements/PageElement.svelte";
   import type { PageValidation } from "../../../utils/FormParser";
-  import { form, formFlowValidation, nodes, orientation, formNotes } from "../../../stores/appStore";
+  import {
+    form,
+    formFlowValidation,
+    nodes,
+    orientation,
+    formNotes,
+    pageTitleValidation,
+    spellcheckFeature as _spellcheckFeature,
+    spellingValidation,
+  } from "../../../stores/appStore";
   import PageBanner from "../pageElements/PageBanner.svelte";
   import PageNotes from "../../notes/PageNotes.svelte";
   import PageNoteForm from "../../notes/PageNoteForm.svelte";
   import type { Note } from "../../../models/Notes";
+  import { ValidatePageSpelling, ValidatePageTitle } from "../../../validators/FormValidators";
   type $$Props = NodeProps;
   export let id: $$Props["id"];
   id;
@@ -46,6 +56,8 @@
   let cardClass = `p-5 border-solid bg-white ${validation.isPageUnreachable ? "border-orange-400 bg-red-300" : ""} border-2`;
   let pageNotes: Note[] = [];
 
+  let spellcheckFeature = $_spellcheckFeature;
+
   formFlowValidation.subscribe((validation) => {
     if (!validation) return;
     if (!page) return;
@@ -62,11 +74,10 @@
     pageIndex = form!.Pages?.findIndex((page) => page.PageSlug == data.pageId)!;
     if (!page) return;
 
-    if (pageIndex == 0) {
-      console.log("page index 0");
-    }
-
     pageButton = page.Elements?.find((element) => element.Type == "Button");
+
+    ValidatePageSpelling(page, pageIndex!);
+    ValidatePageTitle(page, pageIndex!);
   });
 
   formNotes.subscribe((notes) => {
@@ -80,6 +91,18 @@
   const onDoubleClick = () => {
     // fitView({ nodes: $nodes.filter((node) => node.id == page.PageSlug) });
   };
+
+  _spellcheckFeature.subscribe((feature) => {
+    spellcheckFeature = feature;
+
+    if (feature) {
+      spellingValidation.update(() => []);
+      ValidatePageSpelling(page, pageIndex!);
+    }
+  });
+
+  if (spellcheckFeature) ValidatePageSpelling(page, pageIndex!);
+  ValidatePageTitle(page, pageIndex!);
 </script>
 
 <!-- svelte-ignore a11y-no-static-element-interactions -->

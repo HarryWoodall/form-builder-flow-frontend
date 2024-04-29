@@ -1,7 +1,16 @@
 import type { Edge, Node } from "@xyflow/svelte";
 import type { BaseProperty, Behaviour, Condition, FormSchema, IElement, Option, Reusable } from "../models/FormSchema";
-import { nodes as nodeStore, edges as edgeStore, formFlowValidation, areTransformsAvailable, formNotes } from "../stores/appStore";
-import { validateFlow } from "./FormValidator";
+import {
+  nodes as nodeStore,
+  edges as edgeStore,
+  formFlowValidation,
+  areTransformsAvailable,
+  formNotes,
+  spellingValidation,
+  pageTitleValidation,
+  backButtonValidation,
+} from "../stores/appStore";
+import { validateBackButtons, validateFlow } from "../validators/FormValidators";
 import { capitalizeFirstLetter, splitByCapital } from "../helpers/stringHelpers";
 import { baseServerUrl } from "../constants/serverConstants";
 import { getNodeId, getPageFromSlug, getPageIndex } from "../helpers/formHelpers";
@@ -94,7 +103,10 @@ export function generateFlowFromSchema(form: FormSchema) {
         }
 
         newEdge = {
-          id: `${currentPage.PageSlug.toLowerCase()}-${behaviourPageSlug.toLowerCase()}-${getPageIndex(form, currentPage)}-${index}-${targetIndex}`,
+          id: `${currentPage!.PageSlug!.toLowerCase()}-${(behaviourPageSlug as string).toLowerCase()}-${getPageIndex(
+            form,
+            currentPage
+          )}-${index}-${targetIndex}`,
           source: getNodeId(form, currentPage),
           sourceHandle: "start",
           target: getNodeId(form, page) || "unknown",
@@ -137,6 +149,11 @@ export function generateFlowFromSchema(form: FormSchema) {
   edgeStore.update(() => edges);
 
   getFormNotes(form.BaseURL!);
+  spellingValidation.update(() => []);
+  pageTitleValidation.update(() => []);
+  backButtonValidation.update(() => []);
+
+  validateBackButtons(form);
 }
 
 async function getFormNotes(formName: string) {

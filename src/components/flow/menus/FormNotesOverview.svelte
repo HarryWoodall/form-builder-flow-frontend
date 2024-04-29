@@ -1,9 +1,8 @@
 <script lang="ts">
   import { Heading, P, Button, Drawer, A } from "flowbite-svelte";
-  import { formNotes, form, currentModalOpen } from "../../../stores/appStore";
+  import { formNotes, form, currentModalOpen, notesFeature as _notesFeature } from "../../../stores/appStore";
   import type { Note } from "../../../models/Notes";
   import type { FormSchema } from "../../../models/FormSchema";
-  import { CloseSolid } from "flowbite-svelte-icons";
   import { EFormNotesDeletionConfirmationModal } from "../../../constants/modalConstants";
 
   type NotePageData = {
@@ -14,6 +13,9 @@
   let currentFormNotes: Note[] | undefined = $formNotes;
   let currentForm: FormSchema | undefined = $form;
   let pagesWithNotes: NotePageData[] = [];
+  let notesFeature = $_notesFeature;
+
+  _notesFeature.subscribe((feature) => (notesFeature = feature));
 
   formNotes.subscribe((notes) => {
     currentFormNotes = notes;
@@ -38,7 +40,7 @@
 </script>
 
 <div>
-  {#if currentFormNotes != undefined && currentFormNotes.length}
+  {#if notesFeature && currentFormNotes != undefined && currentFormNotes.length}
     <hr class="h-px my-8 pr-3 bg-gray-200 border-0 dark:bg-gray-700" />
     <div class="flex mt-8 mb-4 justify-between align-middle">
       <Heading tag="h2" class="font-bold text-white w-fit" customSize="text-3xl">Notes</Heading>
@@ -46,10 +48,13 @@
     </div>
     <div>
       {#each pagesWithNotes as noteData}
-        <div class="bg-green-500 p-2 my-1 rounded">
-          <Heading tag="h3" class="font-bold pr-3 text-white" customSize="text-xl">{noteData.pageTitle}</Heading>
-          {#each noteData.notes as note}
-            <P class="text-white my-3">{note.text}</P>
+        <div class="bg-green-600 p-2 my-1 rounded">
+          <Heading tag="h3" class="pr-3 text-gray-300" customSize=" m-2 font-semibold">{noteData.pageTitle}</Heading>
+          {#each noteData.notes as note, index}
+            {#if index > 0}
+              <hr class="h-px border-gray-700 border-1 border-dashed my-2 mx-8 bg-gray-300" />
+            {/if}
+            <P class="text-white p-3 ml-3 font-semibold text-xl italic">{note.text}</P>
           {/each}
         </div>
       {/each}

@@ -41,7 +41,6 @@
 
   onMount(async () => {
     element = await getReusableElement(element);
-    console.log(element);
 
     type = element.Type as EElementType;
     if (element.Type == "Radio" || element.Type == "Checkbox" || element.Type == "Select") type = "radio";
@@ -59,8 +58,6 @@
     }
 
     isLoading = false;
-
-    console.log(element);
   });
 </script>
 

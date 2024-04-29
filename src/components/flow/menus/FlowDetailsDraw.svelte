@@ -40,12 +40,12 @@
   bind:hidden={isHidden}
   id="details-sidebar"
   placement="right"
-  divClass="bg-green-400 z-50 h-screen"
+  divClass="bg-green-500 z-50 h-screen shadow-xl"
 >
   <CloseButton on:click={handleClose} class="mb-4 text-white absolute right-8 top-3" />
   <div class="h-screen overflow-auto p-4">
     <div class="flex justify-start items-start">
-      <Heading tag="h1" class="mb-4 font-bold pr-3 text-white" customSize="text-3xl">{form.FormName}</Heading>
+      <Heading tag="h1" class="mb-4 font-bold pr-14 text-white" customSize="text-3xl">{form.FormName}</Heading>
     </div>
 
     <P class="font-bold text-white" size="lg">Base Url</P>

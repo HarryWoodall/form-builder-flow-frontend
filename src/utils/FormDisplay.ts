@@ -1,6 +1,6 @@
 import Dagre from "@dagrejs/dagre";
 import { Position, type Edge, type Node } from "@xyflow/svelte";
-import type { InvalidFlow } from "./FormValidator";
+import type { InvalidFlow } from "../validators/FormValidators";
 
 const nodeWidth = 500;
 const nodeHeight = 150;

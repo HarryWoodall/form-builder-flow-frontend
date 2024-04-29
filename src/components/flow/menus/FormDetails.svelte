@@ -18,5 +18,5 @@
   class="bg-transparent text-black text-md font-semibold hover:bg-green-500 hover:bg-transparent hover:underline max-w-[500px] whitespace-nowrap"
   on:click={handleOpen}
 >
-  <span class="overflow-ellipsis overflow-hidden">{form.FormName}</span>
+  <span class="overflow-ellipsis overflow-hidden">{form?.FormName}</span>
 </Button>
