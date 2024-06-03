@@ -1,47 +1,69 @@
-# Svelte + TS + Vite
+# Form builder flow
 
-This template should help get you started developing with Svelte and TypeScript in Vite.
+## Repositories
 
-## Recommended IDE Setup
+Frontend - https://github.com/HarryWoodall/form-builder-flow-frontend
 
-[VS Code](https://code.visualstudio.com/) + [Svelte](https://marketplace.visualstudio.com/items?itemName=svelte.svelte-vscode).
+Server - https://github.com/HarryWoodall/form-builder-flow-server
 
-## Need an official Svelte framework?
+## Installation
+Requires Node Version >18
 
-Check out [SvelteKit](https://github.com/sveltejs/kit#readme), which is also powered by Vite. Deploy anywhere with its serverless-first approach and adapt to various platforms, with out of the box support for TypeScript, SCSS, and Less, and easily-added support for mdsvex, GraphQL, PostCSS, Tailwind CSS, and more.
-
-## Technical considerations
-
-**Why use this over SvelteKit?**
-
-- It brings its own routing solution which might not be preferable for some users.
-- It is first and foremost a framework that just happens to use Vite under the hood, not a Vite app.
-
-This template contains as little as possible to get started with Vite + TypeScript + Svelte, while taking into account the developer experience with regards to HMR and intellisense. It demonstrates capabilities on par with the other `create-vite` templates and is a good starting point for beginners dipping their toes into a Vite + Svelte project.
-
-Should you later need the extended capabilities and extensibility provided by SvelteKit, the template has been structured similarly to SvelteKit so that it is easy to migrate.
-
-**Why `global.d.ts` instead of `compilerOptions.types` inside `jsconfig.json` or `tsconfig.json`?**
-
-Setting `compilerOptions.types` shuts out all other types not explicitly listed in the configuration. Using triple-slash references keeps the default TypeScript setting of accepting type information from the entire workspace, while also adding `svelte` and `vite/client` type information.
-
-**Why include `.vscode/extensions.json`?**
-
-Other templates indirectly recommend extensions via the README, but this file allows VS Code to prompt the user to install the recommended extension upon opening the project.
-
-**Why enable `allowJs` in the TS template?**
-
-While `allowJs: false` would indeed prevent the use of `.js` files in the project, it does not prevent the use of JavaScript syntax in `.svelte` files. In addition, it would force `checkJs: false`, bringing the worst of both worlds: not being able to guarantee the entire codebase is TypeScript, and also having worse typechecking for the existing JavaScript. In addition, there are valid use cases in which a mixed codebase may be relevant.
-
-**Why is HMR not preserving my local component state?**
-
-HMR state preservation comes with a number of gotchas! It has been disabled by default in both `svelte-hmr` and `@sveltejs/vite-plugin-svelte` due to its often surprising behavior. You can read the details [here](https://github.com/rixo/svelte-hmr#svelte-hmr).
-
-If you have state that's important to retain within a component, consider creating an external store which would not be replaced by HMR.
-
-```ts
-// store.ts
-// An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+### Frontend
+``` bash
+git clone git@github.com:HarryWoodall/form-builder-flow-frontend.git
+cd form-builder-flow-frontend
+npm i
 ```
+
+### Server
+``` bash
+git clone git@github.com:HarryWoodall/form-builder-flow-server.git
+cd form-builder-flow-server
+npm i
+```
+
+create a `.env` file within form-builder-server the top level with the value `FORM_BUILDER_JSON_PATH=<ABSOLOUTE PATH FOR YOUR form-builder-json REPOSITORY>`
+
+## Startup
+From `form-builder-flow-frontend`
+
+`npm run dev` will start the frontend.
+`npm run devServer` will start both the frontend and the server (so long as they exist within the same folder)
+
+## Technologies
+### Frontend
+ - [Svelte](https://svelte.dev/docs/introduction)
+ - [Svelte Flow](https://svelteflow.dev/)
+ - [Flowbite](https://flowbite-svelte.com/)
+ - [Tailwind](https://tailwindcss.com/)
+### Server
+ - [Fastify](https://fastify.dev/)
+
+## Architecture
+### Frontend
+At a high level, JSON data is pulled into the app state ready to be consumed by any views that need it. These views construct a series of page elements that will be placed on the canvas, visualizing the form in its current state. Menus and validators also use the centralized app state
+
+![[System Architecture.png]]
+### Server
+The server is used for handling data transforms such as reusable elements, lookups etc. If the server isn't running, the visualizer will just display the data it can get from the form json file. It is also used to save notes.
+
+It also exposes a POST endpoint `/updateForm` that can be used to programmatically generate a flow on the frontend. Sending a request with a json form payload will trigger a rebuild of the visualization. This can be used to give real time updates while building a form.
+
+## Know issues
+
+ - Flow not updating when options change
+ - Flow not updating when text change (P, h2, etc.)
+ - Adding 'IsConditionalElement' doesn't update background color on element
+ - Summary items not updating on update
+ - Availability note updating between forms
+ - Notes don't update correctly when pages are added/removed (They are index based, not id based)
+ - Format on page load broken
+ - Format will hide paths
+ - Error messages for reusable elements sill display as undefined
+
+## Features I wanted add
+ - Validation for duplicate question ids
+ - Add functionality for exclusive options within checkboxes - [Wiki](https://github.com/smbc-digital/form-builder/wiki/Checkbox)
+ - Check if page is on FB DSL
+ - Validation to ensure spellings (run content through a spell checker?)
