@@ -6,7 +6,6 @@ import {
   formFlowValidation,
   areTransformsAvailable,
   formNotes,
-  spellingValidation,
   pageTitleValidation,
   backButtonValidation,
 } from "../stores/appStore";
@@ -149,7 +148,6 @@ export function generateFlowFromSchema(form: FormSchema) {
   edgeStore.update(() => edges);
 
   getFormNotes(form.BaseURL!);
-  spellingValidation.update(() => []);
   pageTitleValidation.update(() => []);
   backButtonValidation.update(() => []);
 

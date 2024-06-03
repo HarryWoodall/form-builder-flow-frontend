@@ -1,6 +1,6 @@
 import type { Behaviour, FormSchema, Page } from "../models/FormSchema";
-import type { PageTitleValidationResult, SpellCheckPageElement, SpellCheckPageRequest } from "../models/Validation";
-import { pageTitleValidation, spellingValidation, backButtonValidation } from "../stores/appStore";
+import type { PageTitleValidationResult } from "../models/Validation";
+import { pageTitleValidation, backButtonValidation } from "../stores/appStore";
 
 export type InvalidQuestionId = {
   id: string | undefined;
@@ -84,68 +84,6 @@ function addToReachableMap(pages: Page[], page: Page, map: string[], invalidPage
       invalidPages.push(pageSlug);
     }
   });
-}
-
-export async function ValidatePageSpelling(page: Page, index: number) {
-  const data: SpellCheckPageRequest = {};
-
-  if (page.Title != undefined) data.Title = page.Title;
-  if (page.BannerTitle != undefined) data.BannerTitle = page.BannerTitle;
-  if (page.LeadingParagraph != undefined) data.LeadingParagraph = page.LeadingParagraph;
-
-  if (page.Elements != undefined && page.Elements.length > 0) {
-    data.Elements = [];
-
-    for (let element of page.Elements) {
-      if (element.Type == "Button") break;
-      let elementData: SpellCheckPageElement = {};
-
-      if (element.Properties?.QuestionId != undefined) elementData.QuestionId = element.Properties?.QuestionId;
-      if (element.Properties?.Label != undefined) elementData.Label = element.Properties?.Label;
-      if (element.Properties?.Text != undefined) elementData.Text = element.Properties?.Text;
-      if (element.Properties?.Hint != undefined) elementData.Hint = element.Properties?.Hint;
-      if (element.Properties?.IAG != undefined) elementData.IAG = element.Properties?.IAG;
-      if (element.Properties?.CustomValidationMessage != undefined) elementData.CustomValidationMessage = element.Properties?.CustomValidationMessage;
-      if (element.Properties?.SummaryLabel != undefined) elementData.SummaryLabel = element.Properties?.SummaryLabel;
-
-      if (element.Properties?.Options != undefined && element.Properties.Options.length > 0) {
-        elementData.Options = [];
-
-        for (let option of element.Properties?.Options) {
-          let optionData: { Text?: string } = {};
-          if (option.Text != undefined) optionData.Text = option.Text;
-          elementData.Options.push(optionData);
-        }
-      }
-
-      data.Elements.push(elementData);
-    }
-  }
-
-  try {
-    const rawResponse = await fetch("http://localhost:3100/spellcheckPage", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (rawResponse.ok) {
-      const result = await rawResponse.json();
-
-      if (result.length > 0) {
-        spellingValidation.update((data) => {
-          return [...data, { page: page.Title!, pageIndex: index, result: result }].sort((a, b) => a.pageIndex - b.pageIndex);
-        });
-      }
-    }
-  } catch (e) {
-    console.log(e);
-  }
-
-  return data;
 }
 
 export function ValidatePageTitle(page: Page, pageIndex: number) {

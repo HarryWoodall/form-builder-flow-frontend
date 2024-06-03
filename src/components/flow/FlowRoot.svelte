@@ -1,15 +1,7 @@
 <script lang="ts">
   import { writable } from "svelte/store";
   import { SvelteFlow, Controls, Background, BackgroundVariant, MiniMap, Panel, type Node, type Edge, SvelteFlowProvider } from "@xyflow/svelte";
-  import {
-    nodes as nodeStore,
-    edges as edgeStore,
-    form,
-    formFlowValidation,
-    detailsPanelVisible,
-    orientation,
-    spellingValidation,
-  } from "../../stores/appStore";
+  import { nodes as nodeStore, edges as edgeStore, form, formFlowValidation, detailsPanelVisible, orientation } from "../../stores/appStore";
   import FlowMenuTopLeft from "./menus/FlowMenuTopLeft.svelte";
   import FlowMenuTopCenter from "./menus/FlowMenuTopCenter.svelte";
   import FormNode from "./nodes/FormNode.svelte";
@@ -44,8 +36,6 @@
   edgeStore.subscribe((value) => {
     edges.update(() => value);
   });
-
-  spellingValidation.update(() => []);
 
   orientation.update(() => "LR");
 

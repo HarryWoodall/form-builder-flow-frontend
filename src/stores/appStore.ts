@@ -3,7 +3,7 @@ import type { FormSchema, IElement, Page } from "../models/FormSchema";
 import type { Edge, Node } from "@xyflow/svelte";
 import type { InvalidFlow } from "../validators/FormValidators";
 import type { Note } from "../models/Notes";
-import type { BackButtonValidationResult, PageSpellCheck, PageTitleValidationResult } from "../models/Validation";
+import type { BackButtonValidationResult, PageTitleValidationResult } from "../models/Validation";
 
 export const propertyArrayModalOpen = writable<boolean>(false);
 export const summaryArrayModalOpen = writable<boolean>(false);
@@ -27,9 +27,7 @@ export const orientation = writable<"LR" | "TB">();
 
 export const areTransformsAvailable = writable<boolean>(false);
 
-export const spellingValidation = writable<PageSpellCheck[]>([]);
 export const pageTitleValidation = writable<PageTitleValidationResult[]>([]);
 export const backButtonValidation = writable<BackButtonValidationResult[]>([]);
 
-export const spellcheckFeature = writable<boolean>(false);
 export const notesFeature = writable<boolean>(true);

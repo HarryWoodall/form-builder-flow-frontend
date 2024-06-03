@@ -6,7 +6,6 @@
   import { InfoCircleSolid } from "flowbite-svelte-icons";
   import { sineIn } from "svelte/easing";
   import PageTitleValidationOverview from "./validation/PageTitleValidationOverview.svelte";
-  import SpellCheckValidationOverview from "./validation/SpellcheckValidationOverview.svelte";
   import BackButtonValidationOverview from "./validation/BackButtonValidationOverview.svelte";
 
   let hiddenBackdropFalse = true;
@@ -86,6 +85,5 @@
   <div class="">
     <PageTitleValidationOverview />
     <BackButtonValidationOverview />
-    <SpellCheckValidationOverview />
   </div>
 </Drawer>

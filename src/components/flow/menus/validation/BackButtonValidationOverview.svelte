@@ -3,7 +3,7 @@
   import { form, backButtonValidation as _backButtonValidation } from "../../../../stores/appStore";
   import type { Note } from "../../../../models/Notes";
   import type { FormSchema } from "../../../../models/FormSchema";
-  import type { PageSpellCheck, SpellCheckItemValidationResult, BackButtonValidationResult } from "../../../../models/Validation";
+  import type { BackButtonValidationResult } from "../../../../models/Validation";
 
   type NotePageData = {
     pageTitle: string;
@@ -20,18 +20,6 @@
   form.subscribe((form) => {
     currentForm = form;
   });
-
-  const highlightString = (validationItem: SpellCheckItemValidationResult) => {
-    let string = validationItem.fullString;
-    for (let result of validationItem.spellCheckResult) {
-      console.log(result.misspeltWord);
-      string = string.replaceAll(result.misspeltWord, `<span class="font-bold text-yellow-300 italic">${result.misspeltWord}</span>`);
-    }
-
-    console.log(string);
-
-    return string;
-  };
 </script>
 
 <div>
