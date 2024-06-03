@@ -29,7 +29,12 @@
     try {
       const res = await fetch(`http://${baseServerUrl}/formList${searchValue == "" ? "" : "?search=" + searchValue}`);
       const data = await res.json();
-      result = data;
+      if (data.message) {
+        result = data.message
+      } else {
+        result = data;
+      }
+      
     } catch (err) {
       result = ["Something went wrong"];
     }
@@ -92,12 +97,15 @@
     <div class="flex justify-center">
       <Spinner size={"8"} />
     </div>
+  {:else if typeof result == "string"}
+    <P>{result}</P>
   {:else if result.length > 0}
     <List list="none">
       {#each result as item}
         <Li><Button class="font-bold m-0 bg-transparent text-gray-700 hover:underline hover:bg-transparent" on:click={onFormClick}>{item}</Button></Li>
       {/each}
     </List>
+  
   {:else}
     <P>Something went wrong</P>
   {/if}
