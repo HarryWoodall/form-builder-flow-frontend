@@ -44,7 +44,8 @@ From `form-builder-flow-frontend`
 ### Frontend
 At a high level, JSON data is pulled into the app state ready to be consumed by any views that need it. These views construct a series of page elements that will be placed on the canvas, visualizing the form in its current state. Menus and validators also use the centralized app state
 
-![[System Architecture.png]]
+![System Architecture](https://github.com/HarryWoodall/form-builder-flow-frontend/assets/20969276/a9167185-850c-44f6-89b3-571e1f6e3e27)
+
 ### Server
 The server is used for handling data transforms such as reusable elements, lookups etc. If the server isn't running, the visualizer will just display the data it can get from the form json file. It is also used to save notes.
 
