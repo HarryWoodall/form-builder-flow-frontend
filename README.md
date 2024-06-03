@@ -23,7 +23,10 @@ cd form-builder-flow-server
 npm i
 ```
 
-create a `.env` file within form-builder-server the top level with the value `FORM_BUILDER_JSON_PATH=<ABSOLOUTE PATH FOR YOUR form-builder-json REPOSITORY>`
+create a `.env` file within form-builder-server the top level with the value `FORM_BUILDER_JSON_PATH=<ABSOLOUTE PATH FOR YOUR form-builder-json REPOSITORY>`. 
+> Example
+>
+> `FORM_BUILDER_JSON_PATH=C:/code/form-builder-json`
 
 ## Startup
 From `form-builder-flow-frontend`
@@ -61,7 +64,8 @@ It also exposes a POST endpoint `/updateForm` that can be used to programmatical
  - Notes don't update correctly when pages are added/removed (They are index based, not id based)
  - Format on page load broken
  - Format will hide paths
- - Error messages for reusable elements sill display as undefined
+ - Transforms for some data return undefined after websocket update
+ - Page becomes unresponsive given incorrect JSON
 
 ## Features I wanted add
  - Validation for duplicate question ids
