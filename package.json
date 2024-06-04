@@ -29,6 +29,7 @@
   "dependencies": {
     "@dagrejs/dagre": "^1.0.4",
     "@types/spellchecker": "^3.5.2",
-    "@xyflow/svelte": "^0.0.34"
+    "@xyflow/svelte": "^0.0.34",
+    "concurrently": "^8.2.2"
   }
 }
